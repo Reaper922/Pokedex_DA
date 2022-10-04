@@ -33,3 +33,12 @@ function pokemonTypeTemp(pokemonTypes) {
     });
     return typesTemp;
 }
+
+
+function errorTemp() {
+    return `
+        <div class="error-message d-flex-center">
+            <h1>Unfortunately an error occurred while loading the page. Please try again later.</h1>
+            <img src="./img/psyduck.png" alt="Loading Error Image">
+        </div>`;
+}

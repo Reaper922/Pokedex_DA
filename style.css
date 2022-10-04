@@ -210,3 +210,16 @@ body {
         transform: rotate(360deg);
     }
 }
+
+
+/* Error Message */
+.error-message {
+    flex-direction: column;
+    width: 600px;
+    height: 800px;
+}
+
+.error-message img {
+    width: 300px;
+    /* height: 200px; */
+}
