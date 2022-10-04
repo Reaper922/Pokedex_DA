@@ -9,16 +9,16 @@ const pokemonArr = [];
 /**
  * Function that runs after the page is fully loaded.
  */
-function init() {
-    fetchGroupOfPokemon(10);
-    console.log(pokemonArr);
+async function init() {
+    await fetchGroupOfPokemon(10);
+    renderPokemonArr();
 }
 
 
 /**
- * Fetches the Data of a Pokemon with the given ID from the API.
+ * Fetches the data of a Pokemon with the given ID from the API.
  * @param {Number} id ID-Number of the Pokemon 
- * @return {Object} Object with the fetched Pokemon Data
+ * @return {Object} Object with the fetched Pokemon data
  */
 async function fetchPokemon(id = 1) {
     const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
@@ -28,9 +28,9 @@ async function fetchPokemon(id = 1) {
 
 
 /**
- * Creates a new Pokemon Object
- * @param {Object} pokemonData Object with the fetched Pokemon Data
- * @return {Pokemon} Pokemon Object
+ * Creates a new Pokemon object.
+ * @param {Object} pokemonData Object with the fetched Pokemon data
+ * @return {Pokemon} Pokemon object
  */
 function createPokemon(pokemonData) {
     return new Pokemon(pokemonData);
@@ -38,8 +38,8 @@ function createPokemon(pokemonData) {
 
 
 /**
- * Adds the given Pokemon Object to the pokemonArr Array.
- * @param {Pokemon} pokemonObj Pokemon Object
+ * Adds the given Pokemon object to the pokemonArr array.
+ * @param {Pokemon} pokemonObj Pokemon object
  */
 function addPokemonToArray(pokemonObj) {
     pokemonArr.push(pokemonObj);
@@ -47,7 +47,7 @@ function addPokemonToArray(pokemonObj) {
 
 
 /**
- * Fetches the given Amount of Pokemon and adds them to the pokemonArr Array.
+ * Fetches the given amount of Pokemon and adds them to the pokemonArr array.
  * @param {Number} amount Amount of Pokemon to fetch
  */
 async function fetchGroupOfPokemon(amount) {
@@ -56,6 +56,19 @@ async function fetchGroupOfPokemon(amount) {
         const pokemonObj = createPokemon(pokemonData);
         addPokemonToArray(pokemonObj);
     }
+}
+
+
+/**
+ * Renders all Pokemon in the pokemonArr array into the preview container.
+ */
+function renderPokemonArr() {
+    const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
+    pokemonPreviewContainer.innerHTML = '';
+
+    pokemonArr.forEach(pokemon => {
+        pokemonPreviewContainer.innerHTML += pokemonCardTemp(pokemon);
+    })
 }
 
 
