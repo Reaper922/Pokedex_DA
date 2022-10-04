@@ -8,7 +8,7 @@
  */
 function pokemonCardTemp(pokemon) {
     return `
-        <div class="pokemon-preview-card bg-green">
+        <div class="pokemon-preview-card bg-${pokemon.color}">
             <h3 class="txt-h3">${pokemon.name}</h3>
             <div class="types">
                 ${pokemonTypeTemp(pokemon.types)}

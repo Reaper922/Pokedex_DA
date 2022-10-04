@@ -1,9 +1,13 @@
+/**
+ * Pokemon class which stores all the relevant information from the API.
+ */
 class Pokemon {
-    constructor(pokemonObj) {
-        this.id = pokemonObj.id
-        this.name = pokemonObj.name;
-        this.types = pokemonObj.types;
-        this.sprite = pokemonObj.sprites.other.dream_world.front_default;
+    constructor(pokemonData, pokemonSpecies) {
+        this.id = pokemonData.id
+        this.name = pokemonData.name;
+        this.types = pokemonData.types;
+        this.sprite = pokemonData.sprites.other.dream_world.front_default;
+        this.color = pokemonSpecies.color.name;
     }
 }
 

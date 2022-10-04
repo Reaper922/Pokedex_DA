@@ -23,6 +23,7 @@
     --red: #db5349;
     --green: #49d0b0;
     --blue: rgb(86, 159, 228);
+    --white: rgb(170, 170, 170);
     --white-transparent: rgba(255, 255, 255, 0.2);
     --black-transparent: rgba(0, 0, 0, 0.2);
 }
@@ -73,12 +74,16 @@ body {
     background: var(--blue);
 }
 
+.bg-white {
+    background: var(--white);
+}
 
 .d-flex-center {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 
 /* Pokemon Preview Container */
 .pokemon-preview-container {
@@ -88,6 +93,7 @@ body {
     gap: 16px;
     margin: 32px;
 }
+
 
 /* Pokemon Preview Card */
 .pokemon-preview-card {
