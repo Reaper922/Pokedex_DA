@@ -5,6 +5,7 @@
 class Pokemon {
     /**
      * Creates a new Pokemon Objekt.
+     * @constructor
      * @param {Object} pokemonData Object with the fetched Pokemon data
      * @param {Object} pokemonSpecies Object with the fetched Pokemon species data
      */
