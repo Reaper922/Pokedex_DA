@@ -95,6 +95,9 @@ function renderPokemonArr() {
 }
 
 
+/**
+ * Renders a error message to the pokemonPreviewContainer if an error occurs while fetching data from the API.
+ */
 function renderErrorMessage() {
     const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
     pokemonPreviewContainer.innerHTML = '';

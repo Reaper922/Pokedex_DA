@@ -35,6 +35,10 @@ function pokemonTypeTemp(pokemonTypes) {
 }
 
 
+/**
+ * Creates a error message for a possible loading error.
+ * @returns HTML error message
+ */
 function errorTemp() {
     return `
         <div class="error-message d-flex-center">
