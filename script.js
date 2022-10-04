@@ -11,9 +11,15 @@ const pokemonArr = [];
  * Function that runs after the page is fully loaded.
  */
 async function init() {
-    await fetchGroupOfPokemon(pokemonToLoad);
-    hideLoader();
-    renderPokemonArr();
+    try {
+        await fetchGroupOfPokemon(pokemonToLoad);
+        hideLoader();
+        renderPokemonArr();
+    } catch (error) {
+        console.error(error);
+        hideLoader();
+        renderErrorMessage();
+    }
     console.log(pokemonArr);
 }
 
@@ -86,6 +92,14 @@ function renderPokemonArr() {
     pokemonArr.forEach(pokemon => {
         pokemonPreviewContainer.innerHTML += pokemonCardTemp(pokemon);
     })
+}
+
+
+function renderErrorMessage() {
+    const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
+    pokemonPreviewContainer.innerHTML = '';
+
+    pokemonPreviewContainer.innerHTML = errorTemp();
 }
 
 
