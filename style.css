@@ -184,3 +184,22 @@ body {
     width: 140px;
     height: 140px;
 }
+
+
+/* Loader */
+.loader img {
+    width: 200px;
+    height: 200px;
+    opacity: 0.5;
+    animation: spin-loader 6s linear infinite;
+}
+
+@keyframes spin-loader {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -3,6 +3,7 @@
 import Pokemon from './pokemon.js';
 
 
+const pokemonToLoad = 12;
 const pokemonArr = [];
 
 
@@ -10,7 +11,8 @@ const pokemonArr = [];
  * Function that runs after the page is fully loaded.
  */
 async function init() {
-    await fetchGroupOfPokemon(12);
+    await fetchGroupOfPokemon(pokemonToLoad);
+    hideLoader();
     renderPokemonArr();
     console.log(pokemonArr);
 }
@@ -84,6 +86,30 @@ function renderPokemonArr() {
     pokemonArr.forEach(pokemon => {
         pokemonPreviewContainer.innerHTML += pokemonCardTemp(pokemon);
     })
+}
+
+
+/**
+ * Shows the loader.
+ */
+function showLoader() {
+    const loader = document.getElementById('loader');
+    const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
+
+    loader.classList.remove('d-none');
+    pokemonPreviewContainer.classList.add('d-none');
+}
+
+
+/**
+ * Hides the loader.
+ */
+function hideLoader() {
+    const loader = document.getElementById('loader');
+    const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
+
+    loader.classList.add('d-none');
+    pokemonPreviewContainer.classList.remove('d-none');
 }
 
 
