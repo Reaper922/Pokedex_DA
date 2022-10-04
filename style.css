@@ -114,6 +114,10 @@ body {
     align-items: center;
 }
 
+.d-none {
+    display: none;
+}
+
 
 /* Pokemon Preview Container */
 .pokemon-preview-container {
