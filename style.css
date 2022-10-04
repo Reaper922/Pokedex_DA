@@ -1,4 +1,99 @@
+@font-face {
+    font-family: 'Lato';
+    src: url('./fonts/Lato/Lato-Regular.ttf');
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('./fonts/Lato/Lato-Black.ttf');
+    font-style: normal;
+    font-weight: 900;
+}
+
+
+:root {
+    --font-h1: 40px;
+    --font-h2: 36px;
+    --font-h3: 32px;
+    --font-primary: 20px;
+    --font-secondary: 14px;
+    --box-shadow: 4px 4px 12px 4px rgba(0, 0, 0, 0.2);
+    --red: #db5349;
+    --green: #49d0b0;
+    --blue: rgb(86, 159, 228);
+}
+
+
 body {
     margin: 0;
+    font-family: 'Lato';
+    font-weight: 900;
+    background: whitesmoke;
     box-sizing: border-box;
+}
+
+
+.h1 {
+    font-size: var(--font-h1);
+}
+
+.h2 {
+    font-size: var(--font-h2);
+}
+
+.h3 {
+    font-size: var(--font-h3);
+    margin: 16px 0;
+}
+
+.h1 {
+    font-size: var(--font-h1);
+}
+
+.t-body {
+    font-size: var(--font-primary);
+}
+
+.bg-green {
+    background: var(--green);
+}
+
+/* Pokemon Preview Card */
+.pokemon-preview-card {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    padding: 24px;
+    font-size: 24px;
+    color: whitesmoke;
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.24s ease-in-out;
+}
+
+.pokemon-preview-card:hover {
+    transform: scale(105%);
+}
+
+.types {
+    display: flex;
+    flex-direction: column;
+}
+
+.type {
+    width: max-content;
+    padding: 4px 12px;
+    margin: 4px 0;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.pokemon-picture {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    width: 150px;
+    height: 150px;
 }
