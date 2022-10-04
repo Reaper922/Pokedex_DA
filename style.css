@@ -19,10 +19,12 @@
     --font-h3: 32px;
     --font-primary: 20px;
     --font-secondary: 14px;
-    --box-shadow: 4px 4px 12px 4px rgba(0, 0, 0, 0.2);
+    --box-shadow: 4px 4px 8px 2px rgba(0, 0, 0, 0.15);
     --red: #db5349;
     --green: #49d0b0;
     --blue: rgb(86, 159, 228);
+    --white-transparent: rgba(255, 255, 255, 0.2);
+    --black-transparent: rgba(0, 0, 0, 0.2);
 }
 
 
@@ -35,29 +37,47 @@ body {
 }
 
 
-.h1 {
+.txt-h1 {
     font-size: var(--font-h1);
+    margin: 16px 0;
 }
 
-.h2 {
+.txt-h2 {
     font-size: var(--font-h2);
+    margin: 16px 0;
 }
 
-.h3 {
+.txt-h3 {
     font-size: var(--font-h3);
     margin: 16px 0;
 }
 
-.h1 {
+.txt-h1 {
     font-size: var(--font-h1);
+    margin: 16px 0;
 }
 
-.t-body {
+.txt-body {
     font-size: var(--font-primary);
 }
 
 .bg-green {
     background: var(--green);
+}
+
+.d-flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Pokemon Preview Container */
+.pokemon-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin: 32px;
 }
 
 /* Pokemon Preview Card */
@@ -70,6 +90,7 @@ body {
     color: whitesmoke;
     border-radius: 20px;
     box-shadow: var(--box-shadow);
+    overflow: hidden;
     transition: all 0.24s ease-in-out;
 }
 
@@ -87,7 +108,23 @@ body {
     padding: 4px 12px;
     margin: 4px 0;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--white-transparent);
+}
+
+.id {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: var(--black-transparent);
+}
+
+.pokeball-background {
+    position: absolute;
+    top: 80px;
+    left: 150px;
+    width: 220px;
+    height: 220px;
+    opacity: 0.4;
 }
 
 .pokemon-picture {
