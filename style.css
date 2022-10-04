@@ -100,6 +100,7 @@ body {
     border-radius: 20px;
     box-shadow: var(--box-shadow);
     overflow: hidden;
+    cursor: pointer;
     transition: all 0.24s ease-in-out;
 }
 
@@ -138,8 +139,8 @@ body {
 
 .pokemon-picture {
     position: absolute;
-    right: 24px;
+    right: 40px;
     bottom: 24px;
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
 }
