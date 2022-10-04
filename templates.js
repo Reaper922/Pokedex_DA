@@ -26,10 +26,10 @@ function pokemonCardTemp(pokemon) {
  * @return HTML Pokemon types template.
  */
 function pokemonTypeTemp(pokemonTypes) {
-    let types = '';
+    let typesTemp = '';
 
     pokemonTypes.forEach(type => {
-        types += `<span class="type txt-body">${type.type.name}</span>`;
+        typesTemp += `<span class="type txt-body">${type.type.name}</span>`;
     });
-    return types;
+    return typesTemp;
 }
