@@ -1,5 +1,5 @@
 /**
- * Pokemon class which stores all the relevant information from the API.
+ * Pokemon class which stores the relevant information from the API.
  */
 class Pokemon {
     constructor(pokemonData, pokemonSpecies) {
