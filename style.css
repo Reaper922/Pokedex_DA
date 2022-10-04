@@ -61,9 +61,18 @@ body {
     font-size: var(--font-primary);
 }
 
+.bg-red {
+    background: var(--red);
+}
+
 .bg-green {
     background: var(--green);
 }
+
+.bg-blue {
+    background: var(--blue);
+}
+
 
 .d-flex-center {
     display: flex;
@@ -124,7 +133,7 @@ body {
     left: 150px;
     width: 220px;
     height: 220px;
-    opacity: 0.4;
+    opacity: 0.2;
 }
 
 .pokemon-picture {
