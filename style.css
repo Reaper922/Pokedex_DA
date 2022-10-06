@@ -12,6 +12,13 @@
     font-weight: 900;
 }
 
+@font-face {
+    font-family: 'Bangers';
+    src: url('./fonts/Bangers/Bangers-Regular.ttf');
+    font-style: normal;
+    font-weight: 400;
+}
+
 
 :root {
     --font-h1: 40px;
