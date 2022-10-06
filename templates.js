@@ -42,7 +42,7 @@ function pokemonTypeTemp(pokemonTypes) {
 function errorTemp() {
     return `
         <div class="error-message d-flex-center">
-            <h1>Unfortunately an error occurred while loading the page. Please try again later.</h1>
-            <img src="./img/psyduck.png" alt="Loading Error Image">
+            <h3 class="txt-primary">Unfortunately an error occurred while loading the page. Please try again later.</h3>
+            <img src="./img/psyduck.png" alt="Loading Error Image" draggable="false">
         </div>`;
 }

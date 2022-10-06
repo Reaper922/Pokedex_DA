@@ -255,12 +255,11 @@ body {
 /* Error Message */
 .error-message {
     flex-direction: column;
-    width: 600px;
-    height: 800px;
+    margin: 0 16px;
 }
 
 .error-message img {
-    width: 300px;
+    width: 240px;
 }
 
 
