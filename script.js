@@ -20,7 +20,8 @@ async function init() {
         hideLoader();
         renderPokemonArr();
         addCardEventListeners();
-        addModalEventListener();
+        addModalBackgroundEventListener();
+        addCloseIconEventListener();
         fetchRemainingPokemon();
     } catch (error) {
         console.error(error);
@@ -125,8 +126,9 @@ function renderPokemonArr() {
 function addCardEventListeners() {
     const cards = document.querySelectorAll('.pokemon-preview-card');
 
-    cards.forEach(card => {
-        card.addEventListener('click', showDetails);
+    cards.forEach((card, index) => {
+        let pokemonId = index + 1;
+        card.addEventListener('click', () => showDetails(pokemonId));
     })
 }
 
@@ -134,7 +136,7 @@ function addCardEventListeners() {
 /**
  * Adds the click event listener to the background of the details modal to close the Pokemon details.
  */
-function addModalEventListener() {
+function addModalBackgroundEventListener() {
     const modalBackgroud = document.getElementById('modal-background');
 
     modalBackgroud.addEventListener('click', hideDetails);
@@ -142,11 +144,23 @@ function addModalEventListener() {
 
 
 /**
+ * Adds the click event listener to the close icon of the details modal to close the Pokemon details.
+ */
+ function addCloseIconEventListener() {
+    const button = document.getElementById('close-icon');
+
+    button.addEventListener('click', hideDetails);
+}
+
+
+/**
  * Shows the Pokemon details modal.
  */
-function showDetails() {
+function showDetails(pokemonId) {
     const modal = document.getElementById('pokemon-detail-modal');
+    const modalHeader = document.getElementById('modal-header');
 
+    // modalHeader.innerHTML = `Pokemon with id: ${pokemonId}`
     modal.classList.remove('d-none');
 }
 
@@ -194,7 +208,6 @@ function hideLoader() {
 
     pokemonPreviewContainer.innerHTML = errorTemp();
 }
-
 
 
 init();
