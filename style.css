@@ -126,6 +126,13 @@ body {
     display: none;
 }
 
+.no-select {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+
 
 /* Pokemon Preview Container */
 .pokemon-preview-container {
@@ -186,7 +193,6 @@ body {
     width: 220px;
     height: 220px;
     opacity: 0.2;
-    user-select: none;
 }
 
 .pokemon-picture {
@@ -195,7 +201,6 @@ body {
     bottom: 24px;
     width: 140px;
     height: 140px;
-    user-select: none;
 }
 
 
@@ -217,18 +222,35 @@ body {
     transform: translate(-50%, -50%);
     width: 300px;
     height: 400px;
+    color: whitesmoke;
     border-radius: var(--border-radius);
     overflow: hidden;
     z-index: 5;
 }
 
+
+/* Pokemon Detail Modal Header*/
 .modal-header {
     width: 100%;
     height: 100%;
+    padding-top: 32px;
+    padding-left: 16px;
     background: red;
 }
 
-.modal-details {
+.close-icon {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.2;
+    cursor: pointer;
+}
+
+
+/* Pokemon Detail Modal Header*/
+.modal-body {
     position: absolute;
     bottom: 0;
     width: 100%;
