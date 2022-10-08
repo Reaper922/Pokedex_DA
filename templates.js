@@ -14,8 +14,8 @@ function pokemonCardTemp(pokemon) {
                 ${pokemonTypeTemp(pokemon.types)}
             </div>
             <span class="id txt-primary">#${pokemon.id}</span>
-            <img src="./img/pokeball_simple.svg" alt="Pokeball Background" class="pokeball-background" draggable="false">
-            <img src="${pokemon.sprite}" alt="Pokemon Picture" class="pokemon-picture" draggable="false">
+            <img src="./img/pokeball_simple.svg" alt="Pokeball Background" class="pokeball-background no-select" draggable="false">
+            <img src="${pokemon.sprite}" alt="Pokemon Picture" class="pokemon-picture no-select" draggable="false">
         </div>`;
 }
 
