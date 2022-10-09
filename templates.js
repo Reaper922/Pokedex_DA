@@ -2,7 +2,7 @@
 
 
 /**
- * Creates the Pokemon card template.
+ * Creates the Pokemon HTML card template.
  * @param {Pokemon} pokemon Pokemon object 
  * @returns HTML Pokemon card template
  */
@@ -21,7 +21,7 @@ function pokemonCardTemp(pokemon) {
 
 
 /**
- * Creates the Pokemon type template.
+ * Creates the Pokemon HTML type template.
  * @param {Array} pokemonTypes Array of the types from the Pokemon object.
  * @return HTML Pokemon types template.
  */
@@ -29,14 +29,37 @@ function pokemonTypeTemp(pokemonTypes) {
     let typesTemp = '';
 
     pokemonTypes.forEach(type => {
-        typesTemp += `<span class="type txt-body">${type.type.name}</span>`;
+        typesTemp += `<span class="type txt-primary">${type.type.name}</span>`;
     });
     return typesTemp;
 }
 
 
 /**
- * Creates a error message for a possible loading error.
+ * Creates the Pokemon modal header HTML template.
+ * @param {Pokemon} pokemon Pokemon object
+ * @returns 
+ */
+function detailModalHeaderTemp(pokemon) {
+    return `
+        <div class="modal-heading">
+            <h2 class="txt-h3">${pokemon.name}</h2>
+            <span class="id-modal txt-primary">#${pokemon.id}</span>
+        </div>
+        <div class="modal-subheading">
+            <div>
+                ${pokemonTypeTemp(pokemon.types)}
+            </div>
+        </div>
+        <div class="modal-image-container">
+            <img src="${pokemon.sprite}" alt="Pokemon Picture" class="modal-pokemon-picture">
+            <img src="./img/pokeball_simple.svg" alt="Pokeball Background" class="modal-pokeball-background no-select" draggable="false">
+        </div>`;
+}
+
+
+/**
+ * Creates a HTML error message for a possible loading error.
  * @returns HTML error message
  */
 function errorTemp() {
