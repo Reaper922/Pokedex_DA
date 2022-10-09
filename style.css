@@ -220,8 +220,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    height: 400px;
+    width: 700px;
+    height: 800px;
     color: whitesmoke;
     border-radius: var(--border-radius);
     overflow: hidden;
@@ -233,9 +233,6 @@ body {
 .modal-header {
     width: 100%;
     height: 100%;
-    padding-top: 32px;
-    padding-left: 16px;
-    background: red;
 }
 
 .close-icon {
@@ -244,17 +241,54 @@ body {
     left: 16px;
     width: 32px;
     height: 32px;
-    opacity: 0.2;
     cursor: pointer;
 }
 
+.modal-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 32px 16px 32px;
+}
 
-/* Pokemon Detail Modal Header*/
+.modal-subheading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px;
+}
+
+.modal-image-container {
+    position: relative;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.modal-pokemon-picture {
+    grid-area: 1 / 1;
+    width: 280px;
+    height: 280px;
+    z-index: 1;
+}
+
+.modal-pokeball-background {
+    grid-area: 1 / 1;
+    width: 350px;
+    height: 350px;
+    opacity: 0.2;
+    animation: spin-loader 12s linear infinite;
+}
+
+
+/* Pokemon Detail Modal Body*/
 .modal-body {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 200px;
+    height: 300px;
     background: whitesmoke;
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
@@ -304,6 +338,16 @@ body {
 @media screen and (max-width: 350px) {
     .pokemon-picture {
         right: 20px;
+    }
+
+    .modal-pokemon-picture {
+        width: 150px;
+        height: 150px;
+    }
+
+    .modal-pokeball-background {
+        width: 200px;
+        height: 200px;
     }
 }
 
