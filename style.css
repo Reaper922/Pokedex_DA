@@ -283,7 +283,7 @@ body {
     animation: spin-loader 12s linear infinite;
 }
 
-.rectangle-background {
+.modal-rectangle-background {
     position: absolute;
     top: -31%;
     left: -10%;
@@ -293,7 +293,7 @@ body {
     opacity: 0.2;
 }
 
-.dots-background {
+.modal-dots-background {
     position: absolute;
     top: -10%;
     right: 25%;
@@ -391,14 +391,14 @@ body {
         width: 80%;
     }
 
-    .rectangle-background {
+    .modal-rectangle-background {
         top: -35%;
         left: -55%;
         width: 300px;
         height: 300px;
     }
 
-    .dots-background {
+    .modal-dots-background {
         top: -8%;
         right: 5%;
         width: 80px;
