@@ -50,6 +50,9 @@ function detailModalHeaderTemp(pokemon) {
             <div>
                 ${pokemonTypeTemp(pokemon.types)}
             </div>
+            <div>
+                <span class="txt-primary">${pokemon.genera}</span>
+            </div>
         </div>
         <div class="modal-image-container">
             <img src="${pokemon.sprite}" alt="Pokemon Picture" class="modal-pokemon-picture">
