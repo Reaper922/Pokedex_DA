@@ -13,8 +13,16 @@ class Pokemon {
         this.id = pokemonData.id
         this.name = pokemonData.name;
         this.types = pokemonData.types;
+        this.height = pokemonData.height;
+        this.abilities = pokemonData.abilities;
+        this.moves = pokemonData.moves;
+        this.stats = pokemonData.stats;
         this.sprite = pokemonData.sprites.other.dream_world.front_default;
         this.color = pokemonSpecies.color.name;
+        this.genera = pokemonSpecies.genera[7].genus;
+        this.habitat = pokemonSpecies.habitat.name;
+        this.area = pokemonSpecies.pal_park_encounters[0].area.name;
+        this.text = pokemonSpecies.flavor_text_entries[0].flavor_text;
     }
 }
 
