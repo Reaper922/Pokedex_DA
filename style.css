@@ -212,6 +212,7 @@ body {
     right: 0;
     bottom: 0;
     background: var(--black-transparent);
+    backdrop-filter: blur(4px);
     z-index: 4;
 }
 
@@ -280,7 +281,7 @@ body {
     width: 350px;
     height: 350px;
     opacity: 0.2;
-    animation: spin-loader 12s linear infinite;
+    animation: spin-loader 20s linear infinite;
 }
 
 .modal-rectangle-background {
