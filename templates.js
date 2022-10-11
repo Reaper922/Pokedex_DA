@@ -22,8 +22,8 @@ function pokemonCardTemp(pokemon) {
 
 /**
  * Creates the Pokemon HTML type template.
- * @param {Array} pokemonTypes Array of the types from the Pokemon object.
- * @return HTML Pokemon types template.
+ * @param {Array} pokemonTypes Array of the types from the Pokemon object
+ * @return HTML Pokemon types template
  */
 function pokemonTypeTemp(pokemonTypes) {
     let typesTemp = '';
@@ -38,7 +38,7 @@ function pokemonTypeTemp(pokemonTypes) {
 /**
  * Creates the Pokemon modal header HTML template.
  * @param {Pokemon} pokemon Pokemon object
- * @returns 
+ * @returns HTML modal header template
  */
 function detailModalHeaderTemp(pokemon) {
     return `
@@ -57,6 +57,31 @@ function detailModalHeaderTemp(pokemon) {
         <div class="modal-image-container">
             <img src="${pokemon.sprite}" alt="Pokemon Picture" class="modal-pokemon-picture">
             <img src="./img/pokeball_simple.svg" alt="Pokeball Background" class="modal-pokeball-background no-select" draggable="false">
+        </div>`;
+}
+
+
+/**
+ * Creates the Pokemon modal body HTML template for the first tab.
+ * @param {Pokemon} pokemon Pokemon object
+ * @returns HTML modal body template for the first tab
+ */
+function detailModalBodyTab1ContentTemp(pokemon) {
+    return `
+        <div class="tab1-content">
+            <div class="txt-content">
+                <span class="txt-primary">${pokemon.text}</span>
+            </div>
+            <div class="info-content">
+                <div class="d-flex-center-col">
+                    <div>Height</div>
+                    <div>${pokemon.height} feet</div>
+                </div>
+                <div class="d-flex-center-col">
+                    <div>Weight</div>
+                    <div>${pokemon.weight} lb</div>
+                </div>
+            </div>
         </div>`;
 }
 
