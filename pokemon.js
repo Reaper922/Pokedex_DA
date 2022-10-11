@@ -11,7 +11,7 @@ class Pokemon {
      */
     constructor(pokemonData, pokemonSpecies) {
         this.id = pokemonData.id
-        this.name = pokemonData.name;
+        this.name = this.capitalizeFirstLetter(pokemonData.name);
         this.types = pokemonData.types;
         this.height = pokemonData.height;
         this.weight = pokemonData.weight;
@@ -23,8 +23,12 @@ class Pokemon {
         this.genera = pokemonSpecies.genera[7].genus;
         this.habitat = pokemonSpecies.habitat.name;
         this.area = pokemonSpecies.pal_park_encounters[0].area.name;
-        this.text = pokemonSpecies.flavor_text_entries[0].flavor_text;
+        this.text = pokemonSpecies.flavor_text_entries[1].flavor_text.replace('\u000c', " ").replace('\n', "");
     }
+
+    capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
 }
 
 export default Pokemon;
