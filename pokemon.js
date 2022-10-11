@@ -14,6 +14,7 @@ class Pokemon {
         this.name = pokemonData.name;
         this.types = pokemonData.types;
         this.height = pokemonData.height;
+        this.weight = pokemonData.weight;
         this.abilities = pokemonData.abilities;
         this.moves = pokemonData.moves;
         this.stats = pokemonData.stats;
