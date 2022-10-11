@@ -169,11 +169,13 @@ function addModalBackgroundEventListener() {
 function showDetails(pokemonId) {
     const modal = document.getElementById('pokemon-detail-modal');
     const modalHeader = document.getElementById('modal-header');
+    const modalTab1 = document.getElementById('tab1-content');
     const pokemon = getPokemon(pokemonId);
 
     modalHeader.className = '';
     modalHeader.classList.add('modal-header', `bg-${pokemon.color}`);
     modalHeader.innerHTML = detailModalHeaderTemp(pokemon);
+    modalTab1.innerHTML = detailModalBodyTab1ContentTemp(pokemon);
     modal.classList.remove('d-none');
 }
 
