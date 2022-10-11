@@ -42,13 +42,11 @@
     --black-transparent: rgba(0, 0, 0, 0.2);
 }
 
-
 body {
     margin: 0;
     font-family: 'Lato';
     font-weight: 900;
     background: whitesmoke;
-    box-sizing: border-box;
 }
 
 
@@ -118,6 +116,13 @@ body {
 
 .d-flex-center {
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-flex-center-col {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -286,18 +291,18 @@ body {
 
 .modal-rectangle-background {
     position: absolute;
-    top: -31%;
-    left: -10%;
-    width: 300px;
-    height: 300px;
+    top: -145px;
+    left: -30px;
+    width: 200px;
+    height: 200px;
     transform: rotate(-8deg);
     opacity: 0.2;
 }
 
 .modal-dots-background {
     position: absolute;
-    top: -10%;
-    right: 25%;
+    top: -80px;
+    right: 140px;
     width: 150px;
     height: 150px;
     transform: rotate(5deg);
@@ -316,6 +321,89 @@ body {
     border-top-right-radius: var(--border-radius);
 }
 
+.tab1-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.txt-content {
+    margin: 12px 0;
+}
+
+.info-content {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    padding: 8px 0;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 32px;
+    color: black;
+    overflow: hidden;
+}
+
+.tab label {
+    display: block;
+    margin-bottom: 12px;
+    color: black;
+    text-align: center;
+    cursor: pointer;
+}
+
+.tab [type="radio"] {
+    border-bottom: 2px solid var(--black-transparent);
+    cursor: pointer;
+    appearance: none;
+    display: block;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+.tab [type="radio"]:hover,
+.tab [type="radio"]:focus,
+.tab [type="radio"]:checked {
+    border-bottom: 2px solid black;
+}
+
+.tab [type="radio"]:checked+div {
+    opacity: 1;
+}
+
+.tab [type="radio"]+div {
+    display: block;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.tab {
+    width: 50%;
+}
+
+.tab [type="radio"]+div {
+    width: 200%;
+    margin-left: 200%;
+}
+
+.tab [type="radio"]:checked+div {
+    margin-left: 0;
+}
+
+.tab:last-child [type="radio"]+div {
+    margin-left: 100%;
+}
+
+.tab:last-child [type="radio"]:checked+div {
+    margin-left: -100%;
+}
 
 /* Loader */
 .loader {
@@ -358,16 +446,16 @@ body {
 
 /* Media Queries */
 @media screen and (max-width: 350px) {
-    .txt-primary {
-        font-size: 16px;
-    }
-
     .pokemon-picture {
         right: 20px;
     }
 }
 
 @media screen and (max-width: 743px) {
+    :root {
+        --font-primary: 16px
+    }
+
     .modal-container {
         top: 0;
         left: 0;
@@ -381,7 +469,7 @@ body {
 
     .modal-image-container {
         position: relative;
-        top: -40px;
+        top: -60px;
     }
 
     .modal-pokemon-picture {
@@ -389,24 +477,24 @@ body {
     }
 
     .modal-pokeball-background {
-        width: 80%;
+        width: 70%;
     }
 
     .modal-rectangle-background {
-        top: -35%;
-        left: -55%;
-        width: 300px;
-        height: 300px;
+        top: -145px;
+        left: -70px;
+        width: 200px;
+        height: 200px;
     }
 
     .modal-dots-background {
-        top: -8%;
-        right: 5%;
+        top: -30px;
+        right: 50px;
         width: 80px;
         height: 80px;
     }
 
     .modal-body {
-        top: 440px
+        top: 390px
     }
 }
