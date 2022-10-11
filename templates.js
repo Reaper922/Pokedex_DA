@@ -75,7 +75,7 @@ function detailModalBodyTab1ContentTemp(pokemon) {
             <div class="info-content">
                 <div class="d-flex-center-col">
                     <div>Height</div>
-                    <div>${pokemon.height} feet</div>
+                    <div>${pokemon.height} ft</div>
                 </div>
                 <div class="d-flex-center-col">
                     <div>Weight</div>
