@@ -4,7 +4,7 @@ import Pokemon from './pokemon.js';
 
 
 const pokemonArr = [];
-const loadingStepSize = 24;
+const loadingStepSize = 12;
 const startId = 1;
 const endId = 151;
 
@@ -121,7 +121,7 @@ async function fetchGroupOfPokemon(amount = loadingStepSize, startId = 1) {
  * Renders all Pokemon in the pokemonArr array into the preview container.
  */
 function renderPokemonArr() {
-    const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
+    const pokemonPreviewContainer = document.getElementById('pokemon-preview-card-container');
     pokemonPreviewContainer.innerHTML = '';
 
     pokemonArr.forEach(pokemon => {
@@ -165,17 +165,22 @@ function addModalBackgroundEventListener() {
 
 /**
  * Shows the Pokemon details modal.
+ * @param {Number} pokemonId Id of the Pokemon to be displayed
  */
 function showDetails(pokemonId) {
+    const body = document.getElementById('body');
     const modal = document.getElementById('pokemon-detail-modal');
     const modalHeader = document.getElementById('modal-header');
     const modalTab1 = document.getElementById('tab1-content');
+    const modalTab2 = document.getElementById('tab2-content');
     const pokemon = getPokemon(pokemonId);
 
+    body.classList.add('overflow-hidden');
     modalHeader.className = '';
     modalHeader.classList.add('modal-header', `bg-${pokemon.color}`);
     modalHeader.innerHTML = detailModalHeaderTemp(pokemon);
-    modalTab1.innerHTML = detailModalBodyTab1ContentTemp(pokemon);
+    modalTab1.innerHTML = detailModalBodyAboutTemp(pokemon);
+    modalTab2.innerHTML = detailModalBodyBaseStatsTemp(pokemon.stats);
     modal.classList.remove('d-none');
 }
 
@@ -184,8 +189,10 @@ function showDetails(pokemonId) {
  * Hides the Pokemon details modal.
  */
 function hideDetails() {
+    const body = document.getElementById('body');
     const modal = document.getElementById('pokemon-detail-modal');
 
+    body.classList.remove('overflow-hidden');
     modal.classList.add('d-none');
 }
 
@@ -195,7 +202,7 @@ function hideDetails() {
  */
 function showLoader() {
     const loader = document.getElementById('loader');
-    const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
+    const pokemonPreviewContainer = document.getElementById('pokemon-preview-card-container');
 
     loader.classList.remove('d-none');
     pokemonPreviewContainer.classList.add('d-none');
@@ -207,7 +214,7 @@ function showLoader() {
  */
 function hideLoader() {
     const loader = document.getElementById('loader');
-    const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
+    const pokemonPreviewContainer = document.getElementById('pokemon-preview-card-container');
 
     loader.classList.add('d-none');
     pokemonPreviewContainer.classList.remove('d-none');
@@ -218,7 +225,7 @@ function hideLoader() {
  * Renders a error message to the pokemonPreviewContainer if an error occurs while fetching data from the API.
  */
  function renderErrorMessage() {
-    const pokemonPreviewContainer = document.getElementById('pokemon-preview-container');
+    const pokemonPreviewContainer = document.getElementById('pokemon-preview-card-container');
     pokemonPreviewContainer.innerHTML = '';
 
     pokemonPreviewContainer.innerHTML = errorTemp();
