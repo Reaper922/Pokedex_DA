@@ -17,6 +17,7 @@ async function init() {
     try {
         await fetchGroupOfPokemon(loadingStepSize, startId);
         hideLoader();
+        showSmallLoader();
         renderPokemonArr();
         addCardEventListeners();
         addModalBackgroundEventListener();
@@ -113,6 +114,7 @@ async function fetchRemainingPokemon() {
         renderPokemonArr();
         addCardEventListeners();
     }
+    hideSmallLoader();
 }
 
 
@@ -217,6 +219,26 @@ function hideLoader() {
 
     loader.classList.add('d-none');
     pokemonPreviewContainer.classList.remove('d-none');
+}
+
+
+/**
+ * Shows the small-loader.
+ */
+ function showSmallLoader() {
+    const smallLoader = document.getElementById('small-loader');
+
+    smallLoader.classList.remove('d-none');
+}
+
+
+/**
+ * Hides the small-loader.
+ */
+ function hideSmallLoader() {
+    const smallLoader = document.getElementById('small-loader');
+
+    smallLoader.classList.add('d-none');
 }
 
 

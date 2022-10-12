@@ -471,6 +471,13 @@ body {
     animation: spin-loader 6s linear infinite;
 }
 
+.small-loader img {
+    width: 100px;
+    height: 100px;
+    opacity: 0.5;
+    animation: spin-loader 6s linear infinite;
+}
+
 
 /* Error Message */
 .error-message {
