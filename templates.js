@@ -50,27 +50,27 @@ function detailModalHeaderTemp(pokemon) {
             <div>
                 ${pokemonTypeTemp(pokemon.types)}
             </div>
-            <div>
+            <div class="txt-center">
                 <span class="txt-primary">${pokemon.genera}</span>
             </div>
         </div>
         <div class="modal-image-container">
-            <img src="${pokemon.sprite}" alt="Pokemon Picture" class="modal-pokemon-picture">
+            <img src="${pokemon.sprite}" alt="Pokemon Picture" class="modal-pokemon-picture no-select" draggable="false">
             <img src="./img/pokeball_simple.svg" alt="Pokeball Background" class="modal-pokeball-background no-select" draggable="false">
         </div>`;
 }
 
 
 /**
- * Creates the Pokemon modal body HTML template for the first tab.
+ * Creates the Pokemon modal body HTML template for the about tab.
  * @param {Pokemon} pokemon Pokemon object
- * @returns HTML modal body template for the first tab
+ * @returns HTML modal body template for the about tab
  */
-function detailModalBodyTab1ContentTemp(pokemon) {
+function detailModalBodyAboutTemp(pokemon) {
     return `
         <div class="tab1-content">
             <div class="txt-content">
-                <span class="txt-primary">${pokemon.text}</span>
+                <span class="txt-secondary">${pokemon.text}</span>
             </div>
             <div class="info-content">
                 <div class="d-flex-center-col">
@@ -84,6 +84,34 @@ function detailModalBodyTab1ContentTemp(pokemon) {
             </div>
         </div>`;
 }
+
+
+/**
+ * Creates the Pokemon HTML base stats template.
+ * @param {Array} pokemonStats Array of the stats from the Pokemon object
+ * @return HTML Pokemon base stats template
+ */
+function detailModalBodyBaseStatsTemp(pokemonStats) {
+    let statsTemp = '';
+    
+    pokemonStats.forEach(stat => {
+        statsTemp += `
+            <tr>
+                <td class="txt-secondary">${stat.stat.name}</td>
+                <td class="txt-secondary">${stat.base_stat}</td>
+                <td>
+                    <div class="progress-bar">
+                        <div class="progress" style="width:${stat.base_stat}%;"></div>
+                    </div>
+                </td>
+            </tr>`;
+    });
+    return `
+        <table>
+            ${statsTemp}
+        </table>`;
+}
+
 
 
 /**
