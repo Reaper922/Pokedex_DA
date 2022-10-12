@@ -71,7 +71,6 @@ body {
 
 .txt-secondary {
     font-size: var(--font-secondary);
-    margin: 16px 0;
 }
 
 .bg-pink {
@@ -133,6 +132,14 @@ body {
 
 .txt-center {
     text-align: center;
+}
+
+.txt-no-wrap {
+    white-space: nowrap;
+}
+
+.txt-align-right {
+    text-align: right;
 }
 
 .overflow-hidden {
@@ -337,30 +344,51 @@ body {
 }
 
 .txt-content {
+    display: flex;
+    flex-direction: column;
     margin: 16px;
+}
+
+.txt-content:last-child {
+    margin-top: 16px;
 }
 
 .info-content {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
-    margin-top: 24px;
+    margin-top: 16px;
     padding: 8px 0;
     border-radius: 10px;
     box-shadow: var(--box-shadow);
 }
 
+.base-stats {
+    margin: 16px 0;
+}
+
+.base-stats tr {
+    height: 26px;
+}
+
+.base-stats tr td:last-child {
+    width: 100%;
+}
+
+.stat {
+    padding: 0 8px;
+}
+
 .progress-bar{
     display: block;
-    width: 500px;
+    width: 100%;
     height: 10px;
-    background-color: lightgray;
+    background-color: var(--black-transparent);
     overflow: hidden;
 }
 
 .progress {
     height: 10px;
-    background-color: rgb(0, 202, 0);
 }
 
 /* Tabs */
@@ -426,6 +454,7 @@ body {
 .tab:last-child [type="radio"]:checked+div {
     margin-left: -100%;
 }
+
 
 /* Loader */
 .loader {
