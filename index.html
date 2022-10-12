@@ -14,22 +14,22 @@
     <script defer src="script.js" type="module"></script>
 </head>
 
-<body>
+<body id="body">
     <header>
 
     </header>
     <main class="d-flex-center">
         <div class="loader" id="loader">
-            <img src="img/pokeball_color.svg" alt="Loader">
+            <img src="img/pokeball_color.svg" alt="Loader" class="no-select" draggable="false">
         </div>
-        <div class="pokemon-preview-container d-none" id="pokemon-preview-container"></div>
+        <div class="pokemon-preview-card-container d-none" id="pokemon-preview-card-container"></div>
         <div class="pokemon-detail-modal d-none" id="pokemon-detail-modal">
             <div class="modal-background" id="modal-background"></div>
             <div class="modal-container">
-                <img src="./icons/arrow_back_white.svg" class="close-icon no-select" id="close-icon">
-                <img src="./img/rectangle_simple.svg" class="modal-rectangle-background no-select" id="">
-                <img src="./img/dots_simple.svg" class="modal-dots-background no-select" id="">
-                <div class="modal-header bg-red" id="modal-header"></div>
+                <img src="./icons/arrow_back_white.svg" class="close-icon no-select" id="close-icon" draggable="false">
+                <img src="./img/rectangle_simple.svg" class="modal-rectangle-background no-select" draggable="false">
+                <img src="./img/dots_simple.svg" class="modal-dots-background no-select" draggable="false">
+                <div class="modal-header" id="modal-header"></div>
                 <div class="modal-body" id="modal-body">
                     <div class="tabs">
                         <div class="tab">
@@ -40,9 +40,7 @@
                         <div class="tab">
                             <label for="tab2" class="txt-primary">Base Stats</label>
                             <input id="tab2" name="tabs" type="radio">
-                            <div>
-                                <h4>Tab Two</h4>
-                            </div>
+                            <div id="tab2-content"></div>
                         </div>
                     </div>
                 </div>
