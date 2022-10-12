@@ -98,6 +98,7 @@ export function detailModalBodyBaseStatsTemp(pokemon) {
     
     pokemon.stats.forEach(stat => {
         const progress = ((stat.base_stat / 250) * 100).toFixed();
+        const color = pokemon.color === 'white' ? 'black' : pokemon.color;
 
         statsTemp += `
             <tr>
@@ -105,7 +106,7 @@ export function detailModalBodyBaseStatsTemp(pokemon) {
                 <td class="txt-secondary txt-align-right stat">${stat.base_stat}</td>
                 <td>
                     <div class="progress-bar">
-                        <div class="progress bg-${pokemon.color}" style="width:${progress}%;"></div>
+                        <div class="progress bg-${color}" style="width:${progress}%;"></div>
                     </div>
                 </td>
             </tr>`;
