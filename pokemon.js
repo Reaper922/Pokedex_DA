@@ -23,12 +23,27 @@ class Pokemon {
         this.genera = pokemonSpecies.genera[7].genus;
         this.habitat = pokemonSpecies.habitat.name;
         this.area = pokemonSpecies.pal_park_encounters[0].area.name;
-        this.text = pokemonSpecies.flavor_text_entries[1].flavor_text.replace('\u000c', " ").replace('\n', "");
+        this.text = this.replaceUnicodeCharacte(pokemonSpecies.flavor_text_entries[1].flavor_text);
     }
 
+    /**
+     * Capitalizes the first character of a string.
+     * @param {String} string Input string
+     * @returns Modified string
+     */
     capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
-      }
+    }
+
+
+    /**
+     * Replaces unicode character in a string.
+     * @param {String} string Input string
+     * @returns Modified string
+     */
+    replaceUnicodeCharacte(string) {
+        return string.replace('\u000c', " ").replace('\n', " ");
+    }
 }
 
 export default Pokemon;
