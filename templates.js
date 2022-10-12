@@ -1,4 +1,5 @@
-'use strict';
+import { Pokemon } from './pokemon.js';
+import { Helper } from './helper.js';
 
 
 /**
@@ -6,7 +7,7 @@
  * @param {Pokemon} pokemon Pokemon object 
  * @returns HTML Pokemon card template
  */
-function pokemonCardTemp(pokemon) {
+export function pokemonCardTemp(pokemon) {
     return `
         <div class="pokemon-preview-card bg-${pokemon.color}">
             <h3 class="txt-h3">${pokemon.name}</h3>
@@ -25,7 +26,7 @@ function pokemonCardTemp(pokemon) {
  * @param {Array} pokemonTypes Array of the types from the Pokemon object
  * @return HTML Pokemon types template
  */
-function pokemonTypeTemp(pokemonTypes) {
+export function pokemonTypeTemp(pokemonTypes) {
     let typesTemp = '';
 
     pokemonTypes.forEach(type => {
@@ -40,7 +41,7 @@ function pokemonTypeTemp(pokemonTypes) {
  * @param {Pokemon} pokemon Pokemon object
  * @returns HTML modal header template
  */
-function detailModalHeaderTemp(pokemon) {
+export function detailModalHeaderTemp(pokemon) {
     return `
         <div class="modal-heading">
             <h2 class="txt-h3">${pokemon.name}</h2>
@@ -66,18 +67,19 @@ function detailModalHeaderTemp(pokemon) {
  * @param {Pokemon} pokemon Pokemon object
  * @returns HTML modal body template for the about tab
  */
-function detailModalBodyAboutTemp(pokemon) {
+export function detailModalBodyAboutTemp(pokemon) {
     return `
         <div class="tab1-content">
             <div class="txt-content">
-                <span class="txt-secondary">${pokemon.text}</span>
+                <span class="txt-secondary">${pokemon.text}</span><br>
+                <span class="txt-secondary">Habitat: ${Helper.capitalizeFirstLetter(pokemon.habitat)}</span>
             </div>
             <div class="info-content">
-                <div class="d-flex-center-col">
+                <div class="d-flex-center-col txt-secondary">
                     <div>Height</div>
                     <div>${pokemon.height} ft</div>
                 </div>
-                <div class="d-flex-center-col">
+                <div class="d-flex-center-col txt-secondary">
                     <div>Weight</div>
                     <div>${pokemon.weight} lb</div>
                 </div>
@@ -91,23 +93,25 @@ function detailModalBodyAboutTemp(pokemon) {
  * @param {Array} pokemonStats Array of the stats from the Pokemon object
  * @return HTML Pokemon base stats template
  */
-function detailModalBodyBaseStatsTemp(pokemonStats) {
+export function detailModalBodyBaseStatsTemp(pokemon) {
     let statsTemp = '';
     
-    pokemonStats.forEach(stat => {
+    pokemon.stats.forEach(stat => {
+        const progress = ((stat.base_stat / 250) * 100).toFixed();
+
         statsTemp += `
             <tr>
-                <td class="txt-secondary">${stat.stat.name}</td>
-                <td class="txt-secondary">${stat.base_stat}</td>
+                <td class="txt-secondary txt-no-wrap">${Helper.capitalizeFirstLetter(stat.stat.name)}</td>
+                <td class="txt-secondary txt-align-right stat">${stat.base_stat}</td>
                 <td>
                     <div class="progress-bar">
-                        <div class="progress" style="width:${stat.base_stat}%;"></div>
+                        <div class="progress bg-${pokemon.color}" style="width:${progress}%;"></div>
                     </div>
                 </td>
             </tr>`;
     });
     return `
-        <table>
+        <table class="base-stats">
             ${statsTemp}
         </table>`;
 }
@@ -118,7 +122,7 @@ function detailModalBodyBaseStatsTemp(pokemonStats) {
  * Creates a HTML error message for a possible loading error.
  * @returns HTML error message
  */
-function errorTemp() {
+export function errorTemp() {
     return `
         <div class="error-message d-flex-center">
             <h3 class="txt-primary">Unfortunately an error occurred while loading the page. Please try again later.</h3>
