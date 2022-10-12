@@ -1,6 +1,5 @@
-'use strict';
-
-import Pokemon from './pokemon.js';
+import { Pokemon } from './pokemon.js';
+import * as templates from './templates.js';
 
 
 const pokemonArr = [];
@@ -22,7 +21,7 @@ async function init() {
         addCardEventListeners();
         addModalBackgroundEventListener();
         addCloseIconEventListener();
-        // fetchRemainingPokemon();
+        fetchRemainingPokemon();
     } catch (error) {
         console.error(error);
         hideLoader();
@@ -108,7 +107,7 @@ async function fetchGroupOfPokemon(amount = loadingStepSize, startId = 1) {
 /**
  * Fetches the remaining Pokemon until the endId is reached.
  */
- async function fetchRemainingPokemon() {
+async function fetchRemainingPokemon() {
     while (loadedEntries < endId) {
         await fetchGroupOfPokemon(loadingStepSize, loadedEntries + 1);
         renderPokemonArr();
@@ -125,7 +124,7 @@ function renderPokemonArr() {
     pokemonPreviewContainer.innerHTML = '';
 
     pokemonArr.forEach(pokemon => {
-        pokemonPreviewContainer.innerHTML += pokemonCardTemp(pokemon);
+        pokemonPreviewContainer.innerHTML += templates.pokemonCardTemp(pokemon);
     })
 }
 
@@ -156,7 +155,7 @@ function addModalBackgroundEventListener() {
 /**
  * Adds the click event listener to the close icon of the details modal to close the Pokemon details.
  */
- function addCloseIconEventListener() {
+function addCloseIconEventListener() {
     const closeIcon = document.getElementById('close-icon');
 
     closeIcon.addEventListener('click', hideDetails);
@@ -178,9 +177,9 @@ function showDetails(pokemonId) {
     body.classList.add('overflow-hidden');
     modalHeader.className = '';
     modalHeader.classList.add('modal-header', `bg-${pokemon.color}`);
-    modalHeader.innerHTML = detailModalHeaderTemp(pokemon);
-    modalTab1.innerHTML = detailModalBodyAboutTemp(pokemon);
-    modalTab2.innerHTML = detailModalBodyBaseStatsTemp(pokemon.stats);
+    modalHeader.innerHTML = templates.detailModalHeaderTemp(pokemon);
+    modalTab1.innerHTML = templates.detailModalBodyAboutTemp(pokemon);
+    modalTab2.innerHTML = templates.detailModalBodyBaseStatsTemp(pokemon);
     modal.classList.remove('d-none');
 }
 
@@ -224,11 +223,11 @@ function hideLoader() {
 /**
  * Renders a error message to the pokemonPreviewContainer if an error occurs while fetching data from the API.
  */
- function renderErrorMessage() {
+function renderErrorMessage() {
     const pokemonPreviewContainer = document.getElementById('pokemon-preview-card-container');
     pokemonPreviewContainer.innerHTML = '';
 
-    pokemonPreviewContainer.innerHTML = errorTemp();
+    pokemonPreviewContainer.innerHTML = templates.errorTemp();
 }
 
 
