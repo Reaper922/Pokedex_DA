@@ -12,13 +12,6 @@
     font-weight: 900;
 }
 
-@font-face {
-    font-family: 'Bangers';
-    src: url('./fonts/Bangers/Bangers-Regular.ttf');
-    font-style: normal;
-    font-weight: 400;
-}
-
 
 :root {
     --font-h1: 60px;
@@ -49,10 +42,18 @@ body {
     background: whitesmoke;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 32px;
+}
+
 
 .txt-h1 {
+    font-family: 'Lato';
     font-size: var(--font-h1);
-    margin: 16px 0;
+    margin: 0;
 }
 
 .txt-h2 {
@@ -154,12 +155,22 @@ body {
 }
 
 
+/* Header */
+.search {
+    height: 40px;
+    width: 250px;
+    border-radius: 20px;
+    text-indent: 10px;
+}
+
+
 /* Pokemon Preview Container */
 .pokemon-preview-card-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 16px;
+    width: 100%;
     margin: 32px 16px;
 }
 
@@ -513,6 +524,10 @@ body {
     :root {
         --font-primary: 16px;
         --font-secondary: 12px;
+    }
+
+    .d-none-med {
+        display: none;
     }
 
     .modal-container {
