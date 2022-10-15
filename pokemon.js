@@ -17,7 +17,6 @@ export class Pokemon {
         this.types = pokemonData.types;
         this.height = pokemonData.height;
         this.weight = pokemonData.weight;
-        this.moves = pokemonData.moves;
         this.stats = pokemonData.stats;
         this.sprite = pokemonData.sprites.other.dream_world.front_default;
         this.color = pokemonSpecies.color.name;
