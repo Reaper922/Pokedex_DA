@@ -90,7 +90,7 @@ export function detailModalBodyAboutTemp(pokemon) {
 
 /**
  * Creates the Pokemon HTML base stats template.
- * @param {Array} pokemonStats Array of the stats from the Pokemon object
+ * @param {Pokemon} pokemon Pokemon object
  * @return HTML Pokemon base stats template
  */
 export function detailModalBodyBaseStatsTemp(pokemon) {
