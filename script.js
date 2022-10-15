@@ -3,7 +3,7 @@ import * as templates from './templates.js';
 
 
 const pokemonArr = [];
-const loadingStepSize = 12;
+const loadingStepSize = 24;
 const startId = 1;
 const endId = 151;
 
@@ -18,11 +18,12 @@ async function init() {
         await fetchGroupOfPokemon(loadingStepSize, startId);
         hideLoader();
         showSmallLoader();
-        renderPokemonArr();
-        addCardEventListeners();
+        renderPokemonArr(pokemonArr);
+        addCardEventListeners(pokemonArr);
         addModalBackgroundEventListener();
         addCloseIconEventListener();
-        fetchRemainingPokemon();
+        addSearchEventListener();
+        // fetchRemainingPokemon();
     } catch (error) {
         console.error(error);
         hideLoader();
@@ -69,7 +70,7 @@ function createPokemon(pokemonData, pokemonSpecies) {
 /**
  * Returns the Pokemon object of the given ID.
  * @param {Number} pokemonId ID of the Pokemon
- * @returns 
+ * @returns Pokemon object
  */
 function getPokemon(pokemonId) {
     return pokemonArr[pokemonId - 1];
@@ -94,8 +95,7 @@ async function fetchGroupOfPokemon(amount = loadingStepSize, startId = 1) {
     const initialStartId = startId;
 
     for (let index = startId; index <= amount + (startId - 1) && index <= endId; index++) {
-        const pokemonData = await fetchPokemonData(index);
-        const pokemonSpecies = await fetchPokemonSpecies(index);
+        const [pokemonData, pokemonSpecies] = await Promise.all([fetchPokemonData(index), fetchPokemonSpecies(index)])
         const pokemonObj = createPokemon(pokemonData, pokemonSpecies);
         addPokemonToArray(pokemonObj);
         loadedEntries = index;
@@ -111,36 +111,52 @@ async function fetchGroupOfPokemon(amount = loadingStepSize, startId = 1) {
 async function fetchRemainingPokemon() {
     while (loadedEntries < endId) {
         await fetchGroupOfPokemon(loadingStepSize, loadedEntries + 1);
-        renderPokemonArr();
-        addCardEventListeners();
+        renderPokemonArr(pokemonArr);
+        addCardEventListeners(pokemonArr);
     }
     hideSmallLoader();
 }
 
 
 /**
- * Renders all Pokemon in the pokemonArr array into the preview container.
+ * Renders all Pokemon in the given pokemonArray into the preview container.
+ * @param {Array} pokemonArray Array of Pokemon objects
  */
-function renderPokemonArr() {
+function renderPokemonArr(pokemonArray) {
     const pokemonPreviewContainer = document.getElementById('pokemon-preview-card-container');
     pokemonPreviewContainer.innerHTML = '';
 
-    pokemonArr.forEach(pokemon => {
+    pokemonArray.forEach(pokemon => {
         pokemonPreviewContainer.innerHTML += templates.pokemonCardTemp(pokemon);
-    })
+    });
+}
+
+
+/**
+ * Filters the pokemonArr array with the given search term.
+ * @param {String} searchTerm Search term which is used to filter the Pokemon
+ */
+function filterPokemonArray(searchTerm) {
+    const filteredPokemon = pokemonArr.filter(pokemon => {
+        return pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    
+    renderPokemonArr(filteredPokemon);
+    addCardEventListeners(filteredPokemon);
+    hideSmallLoader();
 }
 
 
 /**
  * Adds the click event listener to each card to open the Pokemon details.
+ * @param {Array} pokemonArray Array of Pokemon objects
  */
-function addCardEventListeners() {
+function addCardEventListeners(pokemonArray) {
     const cards = document.querySelectorAll('.pokemon-preview-card');
 
     cards.forEach((card, index) => {
-        let pokemonId = index + 1;
-        card.addEventListener('click', () => showDetails(pokemonId));
-    })
+        card.addEventListener('click', () => showDetails(pokemonArray[index].id));
+    });
 }
 
 
@@ -163,6 +179,16 @@ function addCloseIconEventListener() {
     closeIcon.addEventListener('click', hideDetails);
 }
 
+
+/**
+ * Adds the change event listener to the searchbar to search Pokemon by pressing enter.
+ */
+function addSearchEventListener() {
+    const searchBar = document.getElementById('search');
+
+    searchBar.addEventListener('change', () => filterPokemonArray(searchBar.value));
+}
+ 
 
 /**
  * Shows the Pokemon details modal.
