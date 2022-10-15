@@ -8,6 +8,7 @@ const startId = 1;
 const endId = 151;
 
 let loadedEntries = 0;
+let isFiltered = false;
 
 
 /**
@@ -27,6 +28,7 @@ async function init() {
     } catch (error) {
         console.error(error);
         hideLoader();
+        hideSmallLoader();
         renderErrorMessage();
     }
 }
@@ -111,8 +113,10 @@ async function fetchGroupOfPokemon(amount = loadingStepSize, startId = 1) {
 async function fetchRemainingPokemon() {
     while (loadedEntries < endId) {
         await fetchGroupOfPokemon(loadingStepSize, loadedEntries + 1);
-        renderPokemonArr(pokemonArr);
-        addCardEventListeners(pokemonArr);
+        if (!isFiltered) {
+            renderPokemonArr(pokemonArr);
+            addCardEventListeners(pokemonArr);
+        }
     }
     hideSmallLoader();
 }
@@ -137,6 +141,8 @@ function renderPokemonArr(pokemonArray) {
  * @param {String} searchTerm Search term which is used to filter the Pokemon
  */
 function filterPokemonArray(searchTerm) {
+    isFiltered = searchTerm ? true : false;
+
     const filteredPokemon = pokemonArr.filter(pokemon => {
         return pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
     });
