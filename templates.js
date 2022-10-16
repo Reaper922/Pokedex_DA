@@ -42,10 +42,11 @@ export function pokemonTypeTemp(pokemonTypes) {
  * @returns HTML modal header template
  */
 export function detailModalHeaderTemp(pokemon) {
+    const favoriteIcon = pokemon.isLiked ? 'favorite' : 'favorite_border';
     return `
         <div class="modal-heading">
             <h2 class="txt-h3">${pokemon.name}</h2>
-            <span class="id-modal txt-primary">#${pokemon.id}</span>
+            <span class="id-modal txt-primary">#${pokemon.id}s</span>
         </div>
         <div class="modal-subheading">
             <div>
@@ -54,7 +55,8 @@ export function detailModalHeaderTemp(pokemon) {
             <div class="txt-center">
                 <span class="txt-primary">${pokemon.genera}</span>
             </div>
-        </div>
+            </div>
+        <img src="./icons/${favoriteIcon}_white.svg" alt="Favorite Icon" class="modal-favorite" id="modal-favorite" draggable="false">
         <div class="modal-image-container">
             <img src="${pokemon.sprite}" alt="Pokemon Picture" class="modal-pokemon-picture no-select" draggable="false">
             <img src="./img/pokeball_simple.svg" alt="Pokeball Background" class="modal-pokeball-background no-select" draggable="false">
