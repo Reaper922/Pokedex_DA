@@ -23,5 +23,6 @@ export class Pokemon {
         this.genera = pokemonSpecies.genera[7].genus;
         this.habitat = pokemonSpecies.habitat.name;
         this.text = Helper.replaceUnicodeCharacte(pokemonSpecies.flavor_text_entries[1].flavor_text);
+        this.isLiked = false;
     }
 }
