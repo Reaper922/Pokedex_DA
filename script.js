@@ -23,6 +23,7 @@ async function init() {
         showSmallLoader();
         renderPokemonArr(pokemonArr);
         addNeededEventListeners(pokemonArr);
+        loadFavoritePokemon();
         fetchRemainingPokemon();
     } catch (error) {
         console.error(error);
@@ -210,6 +211,8 @@ function addPokemonToFavorite(event, pokemon) {
     if (!favoritePokemon.includes(pokemon)) {
         favoritePokemon.push(pokemon);
     }
+
+    saveFavoritePokemon();
 }
 
 
@@ -223,6 +226,8 @@ function removePokemonFromFavorite(event, pokemon) {
     event.target.src = `./icons/favorite_border_white.svg`;
 
     favoritePokemon.splice(favoritePokemon.indexOf(pokemon), 1);
+
+    saveFavoritePokemon();
 }
 
 
@@ -325,6 +330,25 @@ function showDetailModal(pokemonId) {
 
     const favoriteIcon = document.getElementById('modal-favorite');
     favoriteIcon.addEventListener('click', (event) => toggleFavoritePokemon(event, pokemon));
+}
+
+
+/**
+ * Saves favorite Pokemon to local storage.
+ */
+function saveFavoritePokemon() {
+    localStorage.setItem('favPokemon', JSON.stringify(favoritePokemon));
+}
+
+
+/**
+ * Loafs favorite Pokemon from local storage.
+ */
+function loadFavoritePokemon() {
+    const loadedPokemon = JSON.parse(localStorage.getItem('favPokemon'));
+
+    if (loadedPokemon) favoritePokemon = loadedPokemon;
+    console.log(favoritePokemon);
 }
 
 
