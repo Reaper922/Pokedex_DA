@@ -46,7 +46,7 @@ export function detailModalHeaderTemp(pokemon) {
     return `
         <div class="modal-heading">
             <h2 class="txt-h3">${pokemon.name}</h2>
-            <span class="id-modal txt-primary">#${pokemon.id}s</span>
+            <span class="id-modal txt-primary">#${pokemon.id}</span>
         </div>
         <div class="modal-subheading">
             <div>
