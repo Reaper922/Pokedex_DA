@@ -204,7 +204,6 @@ function toggleFavoritePokemon(event, pokemon) {
  * @param {Pokemon} pokemon Pokemon object 
  */
 function addPokemonToFavorite(event, pokemon) {
-    console.log(event);
     pokemon.isLiked = true;
     event.target.src = `./icons/favorite_white.svg`;
 
@@ -348,7 +347,6 @@ function loadFavoritePokemon() {
     const loadedPokemon = JSON.parse(localStorage.getItem('favPokemon'));
 
     if (loadedPokemon) favoritePokemon = loadedPokemon;
-    console.log(favoritePokemon);
 }
 
 
