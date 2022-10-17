@@ -9,6 +9,8 @@ const endId = 151;
 
 let loadedEntries = 0;
 let isFiltered = false;
+let isFinished = false;
+let favoritePokemon = [];
 
 
 /**
@@ -20,11 +22,8 @@ async function init() {
         hideLoader();
         showSmallLoader();
         renderPokemonArr(pokemonArr);
-        addCardEventListeners(pokemonArr);
-        addModalBackgroundEventListener();
-        addCloseIconEventListener();
-        addSearchEventListener();
-        // fetchRemainingPokemon();
+        addNeededEventListeners(pokemonArr);
+        fetchRemainingPokemon();
     } catch (error) {
         console.error(error);
         hideLoader();
@@ -119,6 +118,7 @@ async function fetchRemainingPokemon() {
         }
     }
     hideSmallLoader();
+    isFinished = true;
 }
 
 
@@ -133,6 +133,25 @@ function renderPokemonArr(pokemonArray) {
     pokemonArray.forEach(pokemon => {
         pokemonPreviewContainer.innerHTML += templates.pokemonCardTemp(pokemon);
     });
+
+    if (!isFinished) showSmallLoader();
+}
+
+
+/**
+ * Renders the Pokemon details to the detail modal.
+ * @param {Pokemon} pokemon Pokemon object
+ */
+function renderModalDetails(pokemon) {
+    const modalHeader = document.getElementById('modal-header');
+    const modalTab1 = document.getElementById('tab1-content');
+    const modalTab2 = document.getElementById('tab2-content');
+
+    modalHeader.className = '';
+    modalHeader.classList.add('modal-header', `bg-${pokemon.color}`);
+    modalHeader.innerHTML = templates.detailModalHeaderTemp(pokemon);
+    modalTab1.innerHTML = templates.detailModalBodyAboutTemp(pokemon);
+    modalTab2.innerHTML = templates.detailModalBodyBaseStatsTemp(pokemon);
 }
 
 
@@ -150,6 +169,74 @@ function filterPokemonArray(searchTerm) {
     renderPokemonArr(filteredPokemon);
     addCardEventListeners(filteredPokemon);
     hideSmallLoader();
+    resetSearchBar();
+}
+
+
+/**
+ * Resets the input in the searchbar.
+ */
+function resetSearchBar() {
+    const searchBar = document.getElementById('search');
+
+    searchBar.value = '';
+}
+
+
+/**
+ * Adds the pokemon to the favorites list or removes it if it is already there.
+ * @param {Object} event Event object
+ * @param {Pokemon} pokemon Pokemon object
+ */
+function toggleFavoritePokemon(event, pokemon) {
+    if (!pokemon.isLiked) {
+        addPokemonToFavorite(event, pokemon);
+    } else {
+        removePokemonFromFavorite(event, pokemon);
+    }
+}
+
+
+/**
+ * Adds the pokemon to the favoritePokemon array.
+ * @param {Object} event Event object 
+ * @param {Pokemon} pokemon Pokemon object 
+ */
+function addPokemonToFavorite(event, pokemon) {
+    console.log(event);
+    pokemon.isLiked = true;
+    event.target.src = `./icons/favorite_white.svg`;
+
+    if (!favoritePokemon.includes(pokemon)) {
+        favoritePokemon.push(pokemon);
+    }
+}
+
+
+/**
+ * Removes the pokemon to the favoritePokemon array.
+ * @param {Object} event Event object 
+ * @param {Pokemon} pokemon Pokemon object 
+ */
+function removePokemonFromFavorite(event, pokemon) {
+    pokemon.isLiked = false;
+    event.target.src = `./icons/favorite_border_white.svg`;
+
+    favoritePokemon.splice(favoritePokemon.indexOf(pokemon), 1);
+}
+
+
+/**
+ * Adds all the needed event listeners to the DOM.
+ * @param {Array} pokemonArr Array with Pokemon objects
+ */
+function addNeededEventListeners(pokemonArr) {
+    addCardEventListeners(pokemonArr);
+    addModalBackgroundEventListener();
+    addCloseIconEventListener();
+    addShowEventListener();
+    addSearchEventListener();
+    addFavoriteEventListener();
 }
 
 
@@ -161,7 +248,7 @@ function addCardEventListeners(pokemonArray) {
     const cards = document.querySelectorAll('.pokemon-preview-card');
 
     cards.forEach((card, index) => {
-        card.addEventListener('click', () => showDetails(pokemonArray[index].id));
+        card.addEventListener('click', () => showDetailModal(pokemonArray[index].id));
     });
 }
 
@@ -172,17 +259,30 @@ function addCardEventListeners(pokemonArray) {
 function addModalBackgroundEventListener() {
     const modalBackgroud = document.getElementById('modal-background');
 
-    modalBackgroud.addEventListener('click', hideDetails);
+    modalBackgroud.addEventListener('click', hideDetailModal);
 }
 
 
 /**
- * Adds the click event listener to the close icon of the details modal to close the Pokemon details.
+ * Adds the click event listener to the close icon of the detail modal to close the Pokemon details.
  */
 function addCloseIconEventListener() {
     const closeIcon = document.getElementById('close-icon');
 
-    closeIcon.addEventListener('click', hideDetails);
+    closeIcon.addEventListener('click', hideDetailModal);
+}
+
+
+/**
+ * Adds the click event listener to the 'show all' button to render all Pokemon.
+ */
+function addShowEventListener() {
+    const showBtn = document.getElementById('show-all');
+
+    showBtn.addEventListener('click', () => {
+        renderPokemonArr(pokemonArr);
+        addCardEventListeners(pokemonArr);
+    });
 }
 
 
@@ -194,51 +294,49 @@ function addSearchEventListener() {
 
     searchBar.addEventListener('change', () => filterPokemonArray(searchBar.value));
 }
+
+
+/**
+ * Adds the click event listener to the favorite icon to render the favorite Pokemon.
+ */
+ function addFavoriteEventListener() {
+    const favorite = document.getElementById('favorite-pokemon');
+
+    favorite.addEventListener('click', () => {
+        renderPokemonArr(favoritePokemon);
+        addCardEventListeners(favoritePokemon);
+        hideSmallLoader();
+    });
+}
  
 
 /**
- * Shows the Pokemon details modal.
+ * Shows the Pokemon detail modal.
  * @param {Number} pokemonId Id of the Pokemon to be displayed
  */
-function showDetails(pokemonId) {
+function showDetailModal(pokemonId) {
     const body = document.getElementById('body');
     const modal = document.getElementById('pokemon-detail-modal');
-    const modalHeader = document.getElementById('modal-header');
-    const modalTab1 = document.getElementById('tab1-content');
-    const modalTab2 = document.getElementById('tab2-content');
     const pokemon = getPokemon(pokemonId);
-
+    
     body.classList.add('overflow-hidden');
-    modalHeader.className = '';
-    modalHeader.classList.add('modal-header', `bg-${pokemon.color}`);
-    modalHeader.innerHTML = templates.detailModalHeaderTemp(pokemon);
-    modalTab1.innerHTML = templates.detailModalBodyAboutTemp(pokemon);
-    modalTab2.innerHTML = templates.detailModalBodyBaseStatsTemp(pokemon);
+    renderModalDetails(pokemon);
     modal.classList.remove('d-none');
+
+    const favoriteIcon = document.getElementById('modal-favorite');
+    favoriteIcon.addEventListener('click', (event) => toggleFavoritePokemon(event, pokemon));
 }
 
 
 /**
- * Hides the Pokemon details modal.
+ * Hides the Pokemon detail modal.
  */
-function hideDetails() {
+function hideDetailModal() {
     const body = document.getElementById('body');
     const modal = document.getElementById('pokemon-detail-modal');
 
     body.classList.remove('overflow-hidden');
     modal.classList.add('d-none');
-}
-
-
-/**
- * Shows the loader.
- */
-function showLoader() {
-    const loader = document.getElementById('loader');
-    const pokemonPreviewContainer = document.getElementById('pokemon-preview-card-container');
-
-    loader.classList.remove('d-none');
-    pokemonPreviewContainer.classList.add('d-none');
 }
 
 
