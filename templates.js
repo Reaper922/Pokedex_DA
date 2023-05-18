@@ -15,7 +15,7 @@ export function pokemonCardTemp(pokemon) {
                 ${pokemonTypeTemp(pokemon.types)}
             </div>
             <span class="id txt-primary">#${pokemon.id}</span>
-            <img src="./img/pokeball_simple.svg" alt="Pokeball Background" class="pokeball-background no-select" draggable="false">
+            <img src="./assets/img/pokeball_simple.svg" alt="Pokeball Background" class="pokeball-background no-select" draggable="false">
             <img src="${pokemon.sprite}" alt="Pokemon Picture" class="pokemon-picture no-select" draggable="false">
         </div>`;
 }
@@ -56,10 +56,10 @@ export function detailModalHeaderTemp(pokemon) {
                 <span class="txt-primary">${pokemon.genera}</span>
             </div>
             </div>
-        <img src="./icons/${favoriteIcon}_white.svg" alt="Favorite Icon" class="modal-favorite" id="modal-favorite" draggable="false">
+        <img src="./assets/icons/${favoriteIcon}_white.svg" alt="Favorite Icon" class="modal-favorite" id="modal-favorite" draggable="false">
         <div class="modal-image-container">
             <img src="${pokemon.sprite}" alt="Pokemon Picture" class="modal-pokemon-picture no-select" draggable="false">
-            <img src="./img/pokeball_simple.svg" alt="Pokeball Background" class="modal-pokeball-background no-select" draggable="false">
+            <img src="./assets/img/pokeball_simple.svg" alt="Pokeball Background" class="modal-pokeball-background no-select" draggable="false">
         </div>`;
 }
 
@@ -129,6 +129,6 @@ export function errorTemp() {
     return `
         <div class="error-message d-flex-center">
             <h3 class="txt-primary">Unfortunately an error occurred while loading the page. Please try again later.</h3>
-            <img src="./img/psyduck.png" alt="Loading Error Image" draggable="false">
+            <img src="./assets/img/psyduck.png" alt="Loading Error Image" draggable="false">
         </div>`;
 }

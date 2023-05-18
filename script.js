@@ -205,7 +205,7 @@ function toggleFavoritePokemon(event, pokemon) {
  */
 function addPokemonToFavorite(event, pokemon) {
     pokemon.isLiked = true;
-    event.target.src = `./icons/favorite_white.svg`;
+    event.target.src = `./assets/icons/favorite_white.svg`;
 
     if (!favoritePokemon.includes(pokemon)) {
         favoritePokemon.push(pokemon);
@@ -222,7 +222,7 @@ function addPokemonToFavorite(event, pokemon) {
  */
 function removePokemonFromFavorite(event, pokemon) {
     pokemon.isLiked = false;
-    event.target.src = `./icons/favorite_border_white.svg`;
+    event.target.src = `./assets/icons/favorite_border_white.svg`;
 
     favoritePokemon.splice(favoritePokemon.indexOf(pokemon), 1);
 
