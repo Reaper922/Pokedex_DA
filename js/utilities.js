@@ -20,6 +20,6 @@ export function addLeadingZeros(num, totalLength) {
 //  * @param {String} string Input string
 //  * @returns Modified string
 //  */
-// export function replaceUnicodeCharacte(string) {
-//     return string.replace('\u000c', " ").replace('\n', " ");
-// }
+export function replaceUnicodeCharacter(string) {
+    return string.replace('\n', ' ').replace('\u000c', ' ');
+}
