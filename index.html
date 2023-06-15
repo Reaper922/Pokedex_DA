@@ -5,58 +5,139 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A simple to use Pokedex where you can look up all information about your favorite Pokemon.">
+    <meta name="description"
+        content="A simple to use Pokedex where you can look up all information about your favorite Pokemon.">
 
     <title>Pokedex</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <script defer src="script.js" type="module"></script>
+    <script src="./js/script.js" type="module" defer></script>
 </head>
 
-<body id="body">
+<body>
     <header>
-        <h1 class="txt-h1 d-none-med">Pokedex</h1>
-        <nav>
-            <button class="show-all txt-primary" id="show-all">Show&nbspall</button>
-            <input type="search" name="search" placeholder="Search" class="search txt-primary" id="search">
-            <img src="./assets/icons/favorite_red.svg" alt="Favorite Icon" class="favorite-pokemon" id="favorite-pokemon">
-        </nav>
+        <div class="logo-container">
+            <img src="./assets/img/pokeball_color.svg" alt="Pokeball" draggable="false">
+            <h1>Pokedex</h1>
+        </div>
+        <div>
+            <input type="text" name="search" id="search" placeholder="Search">
+        </div>
     </header>
-    <main class="d-flex-center-col">
+
+    <main>
+        <!-- Pokemon Container -->
+        <pokemon-container id="pokemon-container"></pokemon-container>
+
+        <!-- Loader -->
         <div class="loader" id="loader">
-            <img src="/assets/img/pokeball_color.svg" alt="Loader" class="no-select" draggable="false">
+            <img src="./assets/img/pokeball_color.svg" alt="Loader" draggable="false">
         </div>
-        <div class="pokemon-preview-card-container d-none" id="pokemon-preview-card-container"></div>
-        <div class="small-loader d-none" id="small-loader">
-            <img src="/assets/img/pokeball_color.svg" alt="Loader" class="no-select" draggable="false">
+    </main>
+
+    <!-- Modal -->
+    <dialog id="dialog">
+        <img src="./assets/icons/arrow_back_white.svg" alt="Close Button" class="close" id="close" draggable="false">
+        <div class="modal-head" id="modal-head"></div>
+        <div class="modal-body">
+            <img src="./assets/img/rectangle_simple.svg" alt="Spinning Pokeball" class="rectangle-simple" draggable="false">
+            <img src="./assets/img/dots_simple.svg" alt="Spinning Pokeball" class="dots-simple" draggable="false">
+            <img src="./assets/img/pokeball_simple.svg" alt="Spinning Pokeball" class="spinning-pokeball" draggable="false">
+            <img src="#" alt="Pokemon Image" class="modal-pokemon" id="modal-pokemon" draggable="false">
         </div>
-        <div class="pokemon-detail-modal d-none" id="pokemon-detail-modal">
-            <div class="modal-background" id="modal-background"></div>
-            <div class="modal-container">
-                <img src="./assets/icons/arrow_back_white.svg" class="close-icon no-select" id="close-icon" draggable="false">
-                <img src="./assets/img/rectangle_simple.svg" class="modal-rectangle-background no-select" draggable="false">
-                <img src="./assets/img/dots_simple.svg" class="modal-dots-background no-select" draggable="false">
-                <div class="modal-header" id="modal-header"></div>
-                <div class="modal-body" id="modal-body">
-                    <div class="tabs">
-                        <div class="tab">
-                            <label for="tab1" class="txt-primary">About</label>
-                            <input id="tab1" name="tabs" type="radio" checked="checked">
-                            <div id="tab1-content"></div>
+        <div class="modal-details">
+            <div class="tabs">
+                <div class="tab">
+                    <label for="tab-about">About</label>
+                    <input id="tab-about" name="tabs" type="radio" checked="checked">
+                    <div>
+                        <!-- Tab 1 Content -->
+                        <div class="modal-about">
+                            <p id="description"></p><br>
+                            <p id="habitat"></p>
+                            <div class="additional-info">
+                                <div>
+                                    <span>Height:</span>
+                                    <span id="height">0</span>
+                                </div>
+                                <div>
+                                    <span>Weight:</span>
+                                    <span id="weight">0</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="tab">
-                            <label for="tab2" class="txt-primary">Base Stats</label>
-                            <input id="tab2" name="tabs" type="radio">
-                            <div id="tab2-content"></div>
+                    </div>
+                </div>
+                <div class="tab">
+                    <label for="tab-base-stats">Base Stats</label>
+                    <input id="tab-base-stats" name="tabs" type="radio">
+                    <div>
+                        <!-- Tab 2 Content -->
+                        <div class="modal-base-stats">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>HP</td>
+                                        <td id="hp">0</td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress" id="hp-progress"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Attack</td>
+                                        <td id="attack">0</td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress" id="attack-progress"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Defence</td>
+                                        <td id="defence">0</td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress" id="defence-progress"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Special-Attack</td>
+                                        <td id="special-attack">0</td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress" id="special-attack-progress"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Special-Defence</td>
+                                        <td id="special-defence">0</td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress" id="special-defence-progress"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Speed</td>
+                                        <td id="speed">0</td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress" id="speed-progress"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
-    <footer>
-
-    </footer>
+    </dialog>
 </body>
 
 </html>
