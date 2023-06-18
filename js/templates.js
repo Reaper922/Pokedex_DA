@@ -21,7 +21,6 @@ export function pokemonCardTemp(pokemon) {
         </pokemon-card>`;
 }
 
-
 /**
  * Creates the Pokemon dialog head template.
  * @param {Pokemon} pokemon Pokemon object.
