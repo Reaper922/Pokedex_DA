@@ -10,7 +10,9 @@ let nextListUrl = 'https://pokeapi.co/api/v2/pokemon/';
 let loadedPokemonBatch = [];
 let allPokemon = [];
 let favoritePokemonIds = [];
-let favoritePokemon = []
+let favoritePokemon = [];
+let searchedPokemon = [];
+let isRenderedFavorite = false;
 
 
 /**
@@ -24,92 +26,204 @@ const lastCardObserver = new IntersectionObserver(
         lastCardObserver.unobserve(lastCard.target);
         showLoader();
         renderNextBatch();
-    }, {rootMargin: '250px'}
+    }, { rootMargin: '250px' }
 );
 
 /**
- * Initial function that gets executed after the page loads.
+ * Initial function that gets executed after the page has loaded.
  */
 async function init() {
     loadFavoritePokemon();
     renderNextBatch();
-    document.getElementById('close').addEventListener('click', () => {closeModal()});
-    // document.getElementById('logo-container').addEventListener('click', () => renderPokemonList(loadedPokemonBatch, allPokemon));
-    // document.getElementById('load-fav').addEventListener('click', () => renderPokemonList(favoritePokemonIds, favoritePokemon));
+    addLoadAllEventListener();
+    addLoadFavEventListener();
+    addCloseModalEventListener();
+    addSearchbarEventListener();
 }
 
 /**
  * Adds a click event listener to every card to open the modal on click.
+ * @param {array} dataList List of Pokemon objects.
  */
-function addCardEventlistener() {
-    const cards = document.querySelectorAll('pokemon-card');
-    
+function addCardEventlistener(dataList) {
+    const cards = document.querySelectorAll('.pokemon-card');
+
     cards.forEach(card => {
         card.addEventListener('click', event => {
             const pokemonId = event.currentTarget.dataset.id;
-            const pokemon = findPokemon(pokemonId);
+            const pokemon = findPokemon(pokemonId, dataList);
 
             displayModal(pokemon);
         });
     });
 }
 
+/**
+ * Add a click event listener to the logo container to load all Pokemon.
+ */
+function addLoadAllEventListener() {
+    const logoContainerEl = document.getElementById('logo-container');
 
-async function renderNextBatch() {
-    loadedPokemonBatch = await fetchPokemonList();
-    await renderPokemonList();
-    hideLoader();
-    addCardEventlistener();
-    lastCardObserver.observe(document.querySelector('pokemon-card:last-child'));
+    logoContainerEl.addEventListener('click', async () => {
+        isRenderedFavorite = false;
+        clearHTMLContainer();
+        resetNextListUrl();
+        renderNextBatch();
+    });
 }
 
+/**
+ * Add a click event listener to the favorite icon to load all favorite Pokemon.
+ */
+function addLoadFavEventListener() {
+    const loadFavEl = document.getElementById('load-fav');
 
+    loadFavEl.addEventListener('click', async () => {
+        isRenderedFavorite = true
+        clearHTMLContainer();
+        await renderPokemonList(favoritePokemonIds, favoritePokemon);
+        addCardEventlistener(favoritePokemon);
+        hideLoader();
+    });
+}
+
+/**
+ * Add the onKeyDown event listener to the search bar. On enter all Pokemon are searched.
+ */
+function addSearchbarEventListener() {
+    const searchbarEl = document.getElementById('search');
+
+    searchbarEl.addEventListener('keydown', async event => {
+        if (event.key === 'Enter') {
+            showLoader();
+            const url = 'https://pokeapi.co/api/v2/pokemon/?limit=1000';
+            const pokemonList = await fetch(url).then(response => response.json());
+            const searchResult = pokemonList.results.filter(pokemon => pokemon.name.includes(event.target.value.toLowerCase()));
+            const filteredResult = searchResult.filter(pokemon => !pokemon.name.includes("-mega") && !pokemon.name.includes("-gmax"));
+
+            clearHTMLContainer();
+            await renderPokemonList(filteredResult, searchedPokemon);
+            addCardEventlistener(searchedPokemon);
+            hideLoader();
+        }
+    })
+}
+
+/**
+ * Add a click event listener to the modal close button.
+ */
+function addCloseModalEventListener() {
+    const closeBtn = document.getElementById('close');
+
+    closeBtn.addEventListener('click', () => closeModal());
+}
+
+/**
+ * Fetches a list of Pokemon based on the nextListUrl variable. Sets the nextListUrl variable
+ * with the new offset after fetching.
+ * @returns Array of simple Pokemon information (name, url).
+ */
 async function fetchPokemonList() {
     const pokemonList = await fetch(nextListUrl).then(response => response.json());
     nextListUrl = pokemonList.next;
+
     return pokemonList.results;
 }
 
-
+/**
+ * Fetches the data of a Pokemon from the given PokeApi endpoint.
+ * @param {string} url Enpoint of the PokeApi.
+ * @param {string | number} name Name or number of the Pokemon.
+ * @returns 
+ */
 async function fetchPokemonData(url, name) {
     return await fetch(url + name).then(response => response.json());
 }
 
-
-async function renderPokemonList() {
+/**
+ * Iterates over the rawList array, fetches the data from the pokemon,
+ * stores it in the dataArray and renders the HTML into the card container.
+ * @param {array} rawList List of numbers or names of Pokemon.
+ * @param {array} dataList List where the pokemon objects should be stored.
+ */
+async function renderPokemonList(rawList, dataList) {
     const containerEl = document.getElementById('pokemon-container');
     let cachedHTML = '';
 
-    for (let pokemon of loadedPokemonBatch) {
+    for (let pokemon of rawList) {
+        let identifier = pokemon.name ? pokemon.name : pokemon;
         let pokemonObj, data, species;
 
         try {
             [data, species] = await Promise.all([
-                fetchPokemonData(pokemonDataUrl, pokemon.name),
-                fetchPokemonData(pokemonSpeciesUrl, pokemon.name)
+                fetchPokemonData(pokemonDataUrl, identifier),
+                fetchPokemonData(pokemonSpeciesUrl, identifier)
             ]);
         } catch (err) {
-            console.error(`Could not fetch data for pokemon: ${pokemon.name}`);
-            console.error(err.message);
-            continue;
+            console.warn('Could not fetch data for pokemon: ', identifier);
+            identifier = pokemon.url.split('/')[6];
+            console.warn('Fetching again with ID: ', identifier);
+
+            try {
+                [data, species] = await Promise.all([
+                    fetchPokemonData(pokemonDataUrl, identifier),
+                    fetchPokemonData(pokemonSpeciesUrl, identifier)
+                ]);
+            } catch (err) {
+                console.error(`Second fetch was not successfull! Pokemon with id ${identifier} is skipped!`)
+                continue;
+            }
+
         }
         pokemonObj = createPokemon(data, species);
-        allPokemon.push(pokemonObj);
+        dataList.push(pokemonObj);
         cachedHTML += pokemonCardTemp(pokemonObj);
     }
     containerEl.innerHTML += cachedHTML;
 }
 
+/**
+ * Renders the next batch of pokemon based on the info in the query paramter of the nextListUrl variable.
+ */
+async function renderNextBatch() {
+    loadedPokemonBatch = await fetchPokemonList();
+    await renderPokemonList(loadedPokemonBatch, allPokemon);
+    hideLoader();
+    addCardEventlistener(allPokemon);
+    lastCardObserver.observe(document.querySelector('pokemon-card:last-child'));
+}
 
+/**
+ * Clears the Pokemon card container element.
+ */
+function clearHTMLContainer() {
+    const containerEl = document.getElementById('pokemon-container');
+
+    containerEl.innerHTML = '';
+}
+
+/**
+ * Resets the nextListUrl to the original one.
+ */
+function resetNextListUrl() {
+    nextListUrl = 'https://pokeapi.co/api/v2/pokemon/';
+}
+
+/**
+ * Creates a Pokemon object from the data and species information from the API.
+ * @param {object} data Data object from the pokemon endpoint.
+ * @param {object} species Data object from the species endpoint.
+ * @returns 
+ */
 function createPokemon(data, species) {
     return {
         id: data.id,
         name: data.name,
-        sprite: data.sprites.other.dream_world.front_default,
+        sprite: data.sprites.other.dream_world.front_default ? data.sprites.other.dream_world.front_default : '../assets/img/questionmark.svg',
         height: data.height,
         weight: data.weight,
         color: species.color.name,
-        habitat: species.habitat.name,
+        habitat: species.habitat?.name,
         types: getPokemonTypes(data),
         stats: getStats(data),
         genera: getGenera(species),
@@ -117,18 +231,26 @@ function createPokemon(data, species) {
     }
 }
 
-
+/**
+ * Extracts the stats from the Pokemon data object.
+ * @param {object} data Data object from the pokemon endpoint.
+ * @returns Array of Pokemon stats.
+ */
 function getStats(data) {
     let stats = [];
 
-    data.stats.forEach(({base_stat, stat}) => {
+    data.stats.forEach(({ base_stat, stat }) => {
         stats.push(base_stat);
     })
 
     return stats;
 }
 
-
+/**
+ * Extracts the types from the Pokemon data object.
+ * @param {object} data Data object from the pokemon endpoint.
+ * @returns Array of Pokemon types.
+ */
 function getPokemonTypes(data) {
     let types = [];
 
@@ -139,24 +261,40 @@ function getPokemonTypes(data) {
     return types;
 }
 
-
+/**
+ * Extracts the genera from the Pokemon species object.
+ * @param {object} data species object from the pokemon endpoint.
+ * @returns Genera of the Pokemon.
+ */
 function getGenera(species) {
     const genus = species.genera.find(genus => genus.language.name === 'en');
     return genus.genus;
 }
 
-
+/**
+ * Extracts the description from the Pokemon species object.
+ * @param {object} data species object from the pokemon endpoint.
+ * @returns Description of the Pokemon.
+ */
 function getDescription(species) {
     const description = species.flavor_text_entries.find(text => text.language.name === 'en');
     return replaceUnicodeCharacter(description.flavor_text);
 }
 
-
-function findPokemon(pokemonId) {
-    return allPokemon.find(pokemon => pokemon.id == pokemonId);
+/**
+ * Finds a Pokemon by Id in the given list.
+ * @param {number} pokemonId Id of the searched Pokemon.
+ * @param {array} dataList Array of Pokemon objects.
+ * @returns Object of the searched Pokemon if in the list.
+ */
+function findPokemon(pokemonId, dataList) {
+    return dataList.find(pokemon => pokemon.id == pokemonId);
 }
 
-
+/**
+ * Opens the modal and renders the information of the given Pokemon.
+ * @param {object} pokemon Object of the Pokemon that should be displayed.
+ */
 function displayModal(pokemon) {
     const modalEl = document.getElementById('dialog');
 
@@ -171,21 +309,30 @@ function displayModal(pokemon) {
     modalEl.showModal();
 }
 
-
+/**
+ * Renders the head of the modal.
+ * @param {object} pokemon Object of the Pokemon.
+ */
 function renderModalHead(pokemon) {
     const modalHeadEl = document.getElementById('modal-head');
 
     modalHeadEl.innerHTML = pokemonDialogHeadTemp(pokemon);
 }
 
-
+/**
+ * Sets the image of the given Pokemon in the modal.
+ * @param {object} pokemon Object of the Pokemon.
+ */
 function setPokemonImage(pokemon) {
     const pokemonImageEl = document.getElementById('modal-pokemon');
 
     pokemonImageEl.src = pokemon.sprite;
 }
 
-
+/**
+ * Sets the information of the about tab of the modal.
+ * @param {object} pokemon Object of the Pokemon.
+ */
 function setAbout(pokemon) {
     const descriptionEl = document.getElementById('description');
     const habitatEl = document.getElementById('habitat');
@@ -198,7 +345,10 @@ function setAbout(pokemon) {
     weightEl.textContent = pokemon.weight;
 }
 
-
+/**
+ * Sets the base stats of the stats tab of the modal.
+ * @param {object} pokemon Object of the Pokemon.
+ */
 function setBaseStats(pokemon) {
     const stats = ['hp', 'attack', 'defence', 'special-attack', 'special-defence', 'speed'];
 
@@ -208,7 +358,10 @@ function setBaseStats(pokemon) {
     })
 }
 
-
+/**
+ * Sets the progress of the base stats of the stats tab.
+ * @param {object} pokemon Object of the Pokemon.
+ */
 function setBaseStatsProgress(pokemon) {
     const statsProgress = ['hp-progress', 'attack-progress', 'defence-progress', 'special-attack-progress', 'special-defence-progress', 'speed-progress'];
     const conversionFactor = 1.6;
@@ -219,15 +372,21 @@ function setBaseStatsProgress(pokemon) {
     })
 }
 
-
+/**
+ * Set an event listener to be able to favorite the Pokemon.
+ * @param {object} pokemon Object of the Pokemon.
+ */
 function setFavoriteIconEventListener(pokemon) {
     const favoriteEl = document.getElementById('favorite');
 
     favoriteEl.addEventListener('click', () => toggleFavoritePokemon(pokemon));
 }
 
-
-function toggleFavoritePokemon(pokemon) {
+/**
+ * Toggles whether the Pokemon is favored or not.
+ * @param {object} pokemon Object of the Pokemon.
+ */
+async function toggleFavoritePokemon(pokemon) {
     if (!favoritePokemonIds.includes(pokemon.id)) {
         favoritePokemonIds.push(pokemon.id);
         setFavoriteIconImage(true);
@@ -237,9 +396,18 @@ function toggleFavoritePokemon(pokemon) {
         setFavoriteIconImage(false);
     }
     saveFavoritePokemon();
+    if (isRenderedFavorite === true) {
+        clearHTMLContainer();
+        await renderPokemonList(favoritePokemonIds, favoritePokemon);
+        addCardEventlistener(favoritePokemon);
+        hideLoader();
+    }
 }
 
-
+/**
+ * Sets the image of the favorite icon in the modal whether the Pokemon is favored.
+ * @param {boolean} isLiked Status whether the Pokemon is favored.
+ */
 function setFavoriteIconImage(isLiked) {
     const favoriteEl = document.getElementById('favorite');
 
@@ -250,33 +418,44 @@ function setFavoriteIconImage(isLiked) {
     }
 }
 
-
+/**
+ * Close the Pokemon details modal.
+ */
 function closeModal() {
     const modalEl = document.getElementById('dialog');
 
     modalEl.close();
 }
 
-
+/**
+ * Shows the pokeball loader.
+ */
 function showLoader() {
     const loaderEl = document.getElementById('loader');
 
-    loaderEl.classList.remove('d-none');
+    loaderEl.style.display = "flex";
 }
 
-
+/**
+ * Hides the pokeball loader.
+ */
 function hideLoader() {
     const loaderEl = document.getElementById('loader');
 
-    loaderEl.classList.add('d-none');
+    loaderEl.style.display = "none";
 }
 
-
+/**
+ * Saves the favorite Pokemon to the local storage.
+ */
 function saveFavoritePokemon() {
+    favoritePokemonIds.sort((a, b) => a - b);
     localStorage.setItem('fav-pokemon', JSON.stringify(favoritePokemonIds));
 }
 
-
+/**
+ * Loads the favorite Pokemon from the local storage.
+ */
 function loadFavoritePokemon() {
     const loadedPokemon = localStorage.getItem('fav-pokemon');
 
