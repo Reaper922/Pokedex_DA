@@ -29,18 +29,18 @@
     --border-radius: 16px;
     --box-shadow: 4px 4px 8px 2px rgba(0, 0, 0, 0.1);
     --transition-fast: 0.14s ease-in-out;
-    --pink: #db49cf;
-    --red: #db5349;
-    --brown: #db7749;
-    --yellow: #b39b00;
-    --green: #19a781;
-    --blue: #3593eb;
-    --purple: #8149db;
-    --gray: #7e7e7e;
-    --light-gray: #dddddd;
-    --white: #919191;
-    --black: #4a4a4a;
-    --white-transparent: rgba(255, 255, 255, 0.1);
+    --pink: hsl(305, 67%, 55%);
+    --red: hsl(4, 67%, 55%);
+    --brown: hsl(19, 67%, 55%);
+    --yellow: hsl(49, 67%, 50%);
+    --green: hsl(166, 59%, 45%);
+    --blue: hsl(209, 72%, 55%);
+    --purple: hsl(263, 67%, 55%);
+    --light-gray: hsl(0, 0%, 87%);
+    --gray: hsl(0, 0%, 50%);
+    --white: hsl(0, 0%, 65%);
+    --black: hsl(0, 0%, 30%);
+    --white-transparent: rgba(255, 255, 255, 0.2);
     --black-transparent: rgba(0, 0, 0, 0.6);
 }
 
@@ -66,6 +66,7 @@ header {
     color: white;
     background: var(--red);
     box-shadow: var(--box-shadow);
+    z-index: 2;
 }
 
 header input {
@@ -95,10 +96,6 @@ dialog {
 
 dialog::backdrop {
     backdrop-filter: blur(2px);
-}
-
-.d-none {
-    display: none;
 }
 
 .bg-green {
@@ -142,16 +139,22 @@ dialog::backdrop {
     background: var(--black);
 }
 
-.logo-container {
+
+/* Header */
+.logo-container,
+.search-container {
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
     user-select: none;
 }
 
-.logo-container img {
+.logo-container img,
+.search-container img {
     width: 32px;
     height: 32px;
+    cursor: pointer;
 }
 
 pokemon-container {
@@ -163,6 +166,8 @@ pokemon-container {
     padding: 32px 48px;
 }
 
+
+/* Pokemon Card */
 pokemon-card {
     position: relative;
     display: inline-flex;
@@ -170,7 +175,7 @@ pokemon-card {
     flex-shrink: 0;
     width: 340px;
     height: 250px;
-    padding: 24px 32px;
+    padding: 24px 28px;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     color: white;
@@ -195,7 +200,7 @@ pokemon-card h3 {
 pokemon-card h2 {
     align-self: flex-end;
     color: var(--black-transparent);
-    font-size: var(--font-h2);
+    font-size: var(--font-primary);
 }
 
 pokemon-card h3 {
@@ -232,7 +237,7 @@ pokemon-card .card-background {
 
 pokemon-card .pokemon-img {
     position: absolute;
-    right: 32px;
+    right: 48px;
     bottom: 25px;
     width: 150px;
     height: 150px;
@@ -250,6 +255,7 @@ pokemon-card .pokemon-img {
 .loader img {
     width: 150px;
     height: 150px;
+    opacity: 0.5;
     animation: rotating 16s linear infinite;
 }
 
@@ -410,11 +416,16 @@ pokemon-card .pokemon-img {
 .close {
     width: 32px;
     height: 32px;
+    transition: transform var(--transition-fast);
     cursor: pointer;
 }
 
+.close:hover {
+    transform: scale(110%);
+}
 
-/* Tabs */
+
+/* Modal Tabs */
 button:focus,
 input:focus,
 textarea:focus,
