@@ -96,7 +96,10 @@ function addSearchbarEventListener() {
     searchbarEl.addEventListener('keydown', event => {
         const searchQery = (event.target.value).trim().toLowerCase();
 
-        if (event.key === 'Enter' && searchQery.length > 0) searchPokemon(searchQery);
+        if (event.key === 'Enter' && searchQery.length > 0) {
+            event.target.value = '';
+            searchPokemon(searchQery);
+        };
     })
 }
 
