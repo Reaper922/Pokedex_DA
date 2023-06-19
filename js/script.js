@@ -93,19 +93,10 @@ function addLoadFavEventListener() {
 function addSearchbarEventListener() {
     const searchbarEl = document.getElementById('search');
 
-    searchbarEl.addEventListener('keydown', async event => {
-        if (event.key === 'Enter') {
-            showLoader();
-            const url = 'https://pokeapi.co/api/v2/pokemon/?limit=1000';
-            const pokemonList = await fetch(url).then(response => response.json());
-            const searchResult = pokemonList.results.filter(pokemon => pokemon.name.includes(event.target.value.toLowerCase()));
-            const filteredResult = searchResult.filter(pokemon => !pokemon.name.includes("-mega") && !pokemon.name.includes("-gmax"));
+    searchbarEl.addEventListener('keydown', event => {
+        const searchQery = (event.target.value).trim().toLowerCase();
 
-            clearHTMLContainer();
-            await renderPokemonList(filteredResult, searchedPokemon);
-            addCardEventlistener(searchedPokemon);
-            hideLoader();
-        }
+        if (event.key === 'Enter' && searchQery.length > 0) searchPokemon(searchQery);
     })
 }
 
@@ -155,20 +146,14 @@ async function renderPokemonList(rawList, dataList) {
         let pokemonObj, data, species;
 
         try {
-            [data, species] = await Promise.all([
-                fetchPokemonData(pokemonDataUrl, identifier),
-                fetchPokemonData(pokemonSpeciesUrl, identifier)
-            ]);
+            [data, species] = await fetchDataAndSpecies(identifier);
         } catch (err) {
             console.warn('Could not fetch data for pokemon: ', identifier);
             identifier = pokemon.url.split('/')[6];
             console.warn('Fetching again with ID: ', identifier);
 
             try {
-                [data, species] = await Promise.all([
-                    fetchPokemonData(pokemonDataUrl, identifier),
-                    fetchPokemonData(pokemonSpeciesUrl, identifier)
-                ]);
+                [data, species] = await fetchDataAndSpecies(identifier);
             } catch (err) {
                 console.error(`Second fetch was not successfull! Pokemon with id ${identifier} is skipped!`)
                 continue;
@@ -183,6 +168,18 @@ async function renderPokemonList(rawList, dataList) {
 }
 
 /**
+ * Fetches the Pokemon data and species simultaneously.
+ * @param {string | number} identifier Name or number of the Pokemon.
+ * @returns Promise[].
+ */
+async function fetchDataAndSpecies(identifier) {
+    return await Promise.all([
+        fetchPokemonData(pokemonDataUrl, identifier),
+        fetchPokemonData(pokemonSpeciesUrl, identifier)
+    ]);
+}
+
+/**
  * Renders the next batch of pokemon based on the info in the query paramter of the nextListUrl variable.
  */
 async function renderNextBatch() {
@@ -191,6 +188,25 @@ async function renderNextBatch() {
     hideLoader();
     addCardEventlistener(allPokemon);
     lastCardObserver.observe(document.querySelector('pokemon-card:last-child'));
+}
+
+/**
+ * Searches all Pokemon up to the 8th generation if the search query is contained in the name.
+ * @param {string} searchQery Search query.
+ */
+async function searchPokemon(searchQery) {
+    showLoader();
+    const url = 'https://pokeapi.co/api/v2/pokemon/?limit=905';
+    const pokemonList = await fetch(url).then(response => response.json());
+    const searchResult = pokemonList.results.filter(pokemon => pokemon.name.includes(searchQery));
+    const filteredResult = searchResult.filter(pokemon => !pokemon.name.includes("-mega") && !pokemon.name.includes("-gmax"));
+
+    clearHTMLContainer();
+    while (filteredResult.length !== 0) {
+        await renderPokemonList(filteredResult.splice(0, 5), searchedPokemon);
+    }
+    addCardEventlistener(searchedPokemon);
+    hideLoader();
 }
 
 /**
@@ -216,10 +232,11 @@ function resetNextListUrl() {
  * @returns 
  */
 function createPokemon(data, species) {
+    const spriteFrontDefault = data.sprites.other.dream_world.front_default;
     return {
         id: data.id,
         name: data.name,
-        sprite: data.sprites.other.dream_world.front_default ? data.sprites.other.dream_world.front_default : '../assets/img/questionmark.svg',
+        sprite: spriteFrontDefault ? spriteFrontDefault : '../assets/img/questionmark.svg',
         height: data.height,
         weight: data.weight,
         color: species.color.name,
@@ -334,15 +351,14 @@ function setPokemonImage(pokemon) {
  * @param {object} pokemon Object of the Pokemon.
  */
 function setAbout(pokemon) {
-    const descriptionEl = document.getElementById('description');
-    const habitatEl = document.getElementById('habitat');
-    const heightEl = document.getElementById('height');
-    const weightEl = document.getElementById('weight');
+    const aboutInfo = ['description', 'habitat', 'height', 'weight'];
 
-    descriptionEl.textContent = pokemon.description;
-    habitatEl.textContent = `Habitat: ${pokemon.habitat}`;
-    heightEl.textContent = pokemon.height;
-    weightEl.textContent = pokemon.weight;
+    aboutInfo.forEach(info => {
+        const infoEl = document.getElementById(info);
+        const infoText = info === 'habitat' ? `Habitat: ${pokemon[info]}` : pokemon[info];
+
+        infoEl.textContent = infoText;
+    });
 }
 
 /**
